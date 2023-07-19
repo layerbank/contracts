@@ -11,7 +11,15 @@
 - PeckShield : https://github.com/peckshield/publications/tree/master/audit_reports/PeckShield-Audit-Report-LineaBank-v1.0.pdf
 
 ### Deployments
-- TBD
+- LABToken : [0xB97F21D1f2508fF5c73E7B5AF02847640B1ff75d](https://lineascan.build/address/0xB97F21D1f2508fF5c73E7B5AF02847640B1ff75d)
+- Validator : [0x57d8311842F41ec811352F5d68616Fd51551a391](https://lineascan.build/address/0x57d8311842F41ec811352F5d68616Fd51551a391)
+- LABDistributor : [0x5D06067f86946620C326713b846DdC8B97470957](https://lineascan.build/address/0x5D06067f86946620C326713b846DdC8B97470957)
+- RebateDistributor : [0xEA01659B66A682d41f4718bB62134Ea8109fBfC6](https://lineascan.build/address/0xEA01659B66A682d41f4718bB62134Ea8109fBfC6)
+- Core : [0x009a0b7C38B542208936F1179151CD08E2943833](https://lineascan.build/address/0x009a0b7C38B542208936F1179151CD08E2943833)
+- PriceCalculator : [0x4F5F443fEC450fD64Dce57CCacE8f5ad10b4028f](https://lineascan.build/address/0x4F5F443fEC450fD64Dce57CCacE8f5ad10b4028f)
+- RateModelSlope : [0xC690549E0215192D1fFB527BB3ca4D4Ba638Cad2](https://lineascan.build/address/0xC690549E0215192D1fFB527BB3ca4D4Ba638Cad2)
+- lETH : [0xc7D8489DaE3D2EbEF075b1dB2257E2c231C9D231](https://lineascan.build/address/0xc7D8489DaE3D2EbEF075b1dB2257E2c231C9D231)
+- Locker : [0x14C5A2b562754eD412708a103FB9cB65B1b16494](https://lineascan.build/address/0x14C5A2b562754eD412708a103FB9cB65B1b16494)
 
 ### Contacts
 - Twitter : [@LineaBank](https://twitter.com/LineaBank)
