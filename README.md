@@ -1,11 +1,11 @@
-# LineaBank Contracts
+# LayerBank Contracts
 
-<img alt="cover-1" src="https://github.com/lineabank/contracts/assets/135123153/45905a08-13d0-4649-9cad-9bb9b290f2fc">
+![open_graph](https://github.com/layerbank/contracts/assets/135123153/7e7e5737-dfef-4515-b7fb-31a6f86adbf4)
 
 ---
 
-- dapp : https://lineabank.finance
-- docs : https://docs.lineabank.finance
+- dapp (V1) : https://linea.layerbank.finance
+- docs (V1) : https://docs.linea.layerbank.finance
 
 ### Audit reports
 - PeckShield : https://github.com/peckshield/publications/tree/master/audit_reports/PeckShield-Audit-Report-LineaBank-v1.0.pdf
@@ -24,7 +24,7 @@
 - Locker : [0x14C5A2b562754eD412708a103FB9cB65B1b16494](https://lineascan.build/address/0x14C5A2b562754eD412708a103FB9cB65B1b16494)
 
 ### Contacts
-- Twitter : [@LineaBank](https://twitter.com/LineaBank)
+- Twitter : [@LayerBankFi](https://twitter.com/LayerBankFi)
 - Discord : https://discord.com/invite/g8eNuudNxe
-- Email : contacts@lineabank.finance
+- Email : contacts@layerbank.finance
 
