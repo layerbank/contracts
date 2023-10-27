@@ -40,6 +40,20 @@
 - lUSDC : [0x0D8F8e271DD3f2fC58e5716d3Ff7041dBe3F0688](https://scrollscan.com/address/0x0D8F8e271DD3f2fC58e5716d3Ff7041dBe3F0688)
 - Leverager : [0x119F312c25a1cEb9e6708660A1D47D4034BB8441](https://scrollscan.com/address/0x119F312c25a1cEb9e6708660A1D47D4034BB8441)
 
+### Manta Pacific Mainnet
+- LABToken : [0x20A512dbdC0D006f46E6cA11329034Eb3d18c997](https://pacific-explorer.manta.network/address/0x20A512dbdC0D006f46E6cA11329034Eb3d18c997)
+- xLAB : [0x69E38d781183A52dE5e7506cd57bC6C55Bb74467](https://pacific-explorer.manta.network/address/0x69E38d781183A52dE5e7506cd57bC6C55Bb74467)
+- Validator : [0xF2C1E27A4Bf0D81Bb4A6E6e3E5DCD1DC6ED3A7fA](https://pacific-explorer.manta.network/address/0xF2C1E27A4Bf0D81Bb4A6E6e3E5DCD1DC6ED3A7fA)
+- LABDistributor : [0x67c10B7b8eEFe92EB4DfdEeedd94263632E483b0](https://pacific-explorer.manta.network/address/0x67c10B7b8eEFe92EB4DfdEeedd94263632E483b0)
+- RewardController : [0x68b30D4C712BB9B629eb79595a6c804E5968Eb40](https://pacific-explorer.manta.network/address/0x68b30D4C712BB9B629eb79595a6c804E5968Eb40)
+- RebateDistributor : [0xC85836a3878e4DbBEc91ac0701d4F6dB08ce616d](https://pacific-explorer.manta.network/address/0xC85836a3878e4DbBEc91ac0701d4F6dB08ce616d)
+- Core : [0xB7A23Fc0b066051dE58B922dC1a08f33DF748bbf](https://pacific-explorer.manta.network/address/0xB7A23Fc0b066051dE58B922dC1a08f33DF748bbf)
+- PriceCalculator : [0x38f4384B457F81A4895c93a7503c255eFd0746d2](https://pacific-explorer.manta.network/address/0x38f4384B457F81A4895c93a7503c255eFd0746d2)
+- RateModelSlope : [0x27F85bD47740139a56e34124B33481ea6e1e660D](https://pacific-explorer.manta.network/address/0x27F85bD47740139a56e34124B33481ea6e1e660D)
+- lETH : [0x7479c717f2B72116D15B4eaF8D540C497E07e0B6](https://pacific-explorer.manta.network/address/0x7479c717f2B72116D15B4eaF8D540C497E07e0B6)
+- lUSDC : [0x7Def25c6C2b4Bc9e9fB5122D22650F8EcdFeff45](https://pacific-explorer.manta.network/address/0x7Def25c6C2b4Bc9e9fB5122D22650F8EcdFeff45)
+- Leverager : [0x4054F478ec834FbdB2B192F144d4615d31bDa9a6](https://pacific-explorer.manta.network/address/0x4054F478ec834FbdB2B192F144d4615d31bDa9a6)
+
 
 ## Contacts
 - Twitter : [@LayerBankFi](https://twitter.com/LayerBankFi)
