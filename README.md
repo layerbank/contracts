@@ -52,6 +52,8 @@
 - RateModelSlope : [0x27F85bD47740139a56e34124B33481ea6e1e660D](https://pacific-explorer.manta.network/address/0x27F85bD47740139a56e34124B33481ea6e1e660D)
 - lETH : [0x7479c717f2B72116D15B4eaF8D540C497E07e0B6](https://pacific-explorer.manta.network/address/0x7479c717f2B72116D15B4eaF8D540C497E07e0B6)
 - lUSDC : [0x7Def25c6C2b4Bc9e9fB5122D22650F8EcdFeff45](https://pacific-explorer.manta.network/address/0x7Def25c6C2b4Bc9e9fB5122D22650F8EcdFeff45)
+- lTIA : [0x9d8Ecb502d2Ac290644D70A096165188D47e21A4](https://pacific-explorer.manta.network/address/0x9d8Ecb502d2Ac290644D70A096165188D47e21A4)
+- lwstETH : [0xDF4b60ce539648AB05541827A3bf0a079a5fc1C2](https://pacific-explorer.manta.network/address/0xDF4b60ce539648AB05541827A3bf0a079a5fc1C2)
 - Leverager : [0x4054F478ec834FbdB2B192F144d4615d31bDa9a6](https://pacific-explorer.manta.network/address/0x4054F478ec834FbdB2B192F144d4615d31bDa9a6)
 
 
