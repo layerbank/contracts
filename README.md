@@ -56,6 +56,8 @@
 - lUSDC : [0x7Def25c6C2b4Bc9e9fB5122D22650F8EcdFeff45](https://pacific-explorer.manta.network/address/0x7Def25c6C2b4Bc9e9fB5122D22650F8EcdFeff45)
 - lTIA : [0x9d8Ecb502d2Ac290644D70A096165188D47e21A4](https://pacific-explorer.manta.network/address/0x9d8Ecb502d2Ac290644D70A096165188D47e21A4)
 - lwstETH : [0xDF4b60ce539648AB05541827A3bf0a079a5fc1C2](https://pacific-explorer.manta.network/address/0xDF4b60ce539648AB05541827A3bf0a079a5fc1C2)
+- lwUSDM : [0x472D43A8f00A41c3431e549367d2DE2E07c5e388](https://pacific-explorer.manta.network/address/0x472D43A8f00A41c3431e549367d2DE2E07c5e388)
+- lSTONE : [0x71384B2c17433Ba1D8F6Fe895E9B2E7953dCED68](https://pacific-explorer.manta.network/address/0x71384B2c17433Ba1D8F6Fe895E9B2E7953dCED68)
 - Leverager : [0x4054F478ec834FbdB2B192F144d4615d31bDa9a6](https://pacific-explorer.manta.network/address/0x4054F478ec834FbdB2B192F144d4615d31bDa9a6)
 
 
