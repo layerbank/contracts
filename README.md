@@ -4,6 +4,7 @@
 
 - Linea Mainnet Dapp (V1) : https://linea.layerbank.finance
 - Scroll Mainnet Dapp (V2) : https://scroll.layerbank.finance
+- Manta Mainnet Dapp (V2) : https://manta.layerbank.finance
 - Docs (V1) : https://docs.linea.layerbank.finance
 - Docs (V2) : https://docs.layerbank.finance
 
@@ -58,6 +59,7 @@
 - lwstETH : [0xDF4b60ce539648AB05541827A3bf0a079a5fc1C2](https://pacific-explorer.manta.network/address/0xDF4b60ce539648AB05541827A3bf0a079a5fc1C2)
 - lwUSDM : [0x472D43A8f00A41c3431e549367d2DE2E07c5e388](https://pacific-explorer.manta.network/address/0x472D43A8f00A41c3431e549367d2DE2E07c5e388)
 - lSTONE : [0x71384B2c17433Ba1D8F6Fe895E9B2E7953dCED68](https://pacific-explorer.manta.network/address/0x71384B2c17433Ba1D8F6Fe895E9B2E7953dCED68)
+- lMANTA : [0x604ddc9c59572D197B983F0578e58e61026765eD](https://pacific-explorer.manta.network/address/0x604ddc9c59572D197B983F0578e58e61026765eD)
 - Leverager : [0x4054F478ec834FbdB2B192F144d4615d31bDa9a6](https://pacific-explorer.manta.network/address/0x4054F478ec834FbdB2B192F144d4615d31bDa9a6)
 
 
