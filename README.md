@@ -5,6 +5,7 @@
 - Linea Mainnet Dapp (V1) : https://linea.layerbank.finance
 - Scroll Mainnet Dapp (V2) : https://scroll.layerbank.finance
 - Manta Mainnet Dapp (V2) : https://manta.layerbank.finance
+- B Squared Testnet Dapp (V2) : https://testnet.bsquared.layerbank.finance
 - Docs (V1) : https://docs.linea.layerbank.finance
 - Docs (V2) : https://docs.layerbank.finance
 
