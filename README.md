@@ -64,6 +64,22 @@
 - Leverager : [0x4054F478ec834FbdB2B192F144d4615d31bDa9a6](https://pacific-explorer.manta.network/address/0x4054F478ec834FbdB2B192F144d4615d31bDa9a6)
 
 
+### Mode Mainnet
+- LABToken : [0xFE67e16313f4B38743a153f74D5762F7C83e59aE](https://explorer.mode.network/address/0xFE67e16313f4B38743a153f74D5762F7C83e59aE)
+- xLAB : [0xD4Ab4799E66C40485b136580FFa233f7bD2a9f8B](https://explorer.mode.network/address/0xD4Ab4799E66C40485b136580FFa233f7bD2a9f8B)
+- Validator : [0x8aCBBEafD432b86A0772A2Ae16df87885f062CDb](https://explorer.mode.network/address/0x8aCBBEafD432b86A0772A2Ae16df87885f062CDb)
+- LABDistributor : [0xe8C3BA0c2AC39F9d97BCEBf913e480b55d4C1AeC](https://explorer.mode.network/address/0xe8C3BA0c2AC39F9d97BCEBf913e480b55d4C1AeC)
+- RewardController : [0xA2c4fF1500F7E5137d2299642118dF7A2C0Ba82a](https://explorer.mode.network/address/0xA2c4fF1500F7E5137d2299642118dF7A2C0Ba82a)
+- RebateDistributor : [0x67d21527b227ec286409c6dd28D4704424cE006f](https://explorer.mode.network/address/0x67d21527b227ec286409c6dd28D4704424cE006f)
+- Core : [0x80980869D90A737aff47aBA6FbaA923012C1FF50](https://explorer.mode.network/address/0x80980869D90A737aff47aBA6FbaA923012C1FF50)
+- PriceCalculator : [0x310E183416d7f266C150e7244733d1DcB1470172](https://explorer.mode.network/address/0x310E183416d7f266C150e7244733d1DcB1470172)
+- RateModelSlope : [0x16Cd8DAcE8569c7bd4e903c864444367b9F7b1af](https://explorer.mode.network/address/0x16Cd8DAcE8569c7bd4e903c864444367b9F7b1af)
+- lETH : [0xe855B8018C22A05F84724e93693caf166912aDD5](https://explorer.mode.network/address/0xe855B8018C22A05F84724e93693caf166912aDD5)
+- lUSDC : [0xBa6e89c9cDa3d72B7D8D5B05547a29f9BdBDBaec](https://explorer.mode.network/address/0xBa6e89c9cDa3d72B7D8D5B05547a29f9BdBDBaec)
+- lUSDT : [0xC5b9CB1A26Fb1f9b8e26D8D357Cb950f53Df4959](https://explorer.mode.network/address/0xC5b9CB1A26Fb1f9b8e26D8D357Cb950f53Df4959)
+- Leverager : [0xF0dCBa2dD51311b5AD5770573eDb8d39d39029E5](https://explorer.mode.network/address/0xF0dCBa2dD51311b5AD5770573eDb8d39d39029E5)
+
+
 ## Contacts
 - Twitter : [@LayerBankFi](https://twitter.com/LayerBankFi)
 - Discord : https://discord.com/invite/g8eNuudNxe
