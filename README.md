@@ -2,19 +2,20 @@
 
 ![open_graph](https://github.com/layerbank/contracts/assets/135123153/7e7e5737-dfef-4515-b7fb-31a6f86adbf4)
 
-- Linea Mainnet Dapp (V1) : https://linea.layerbank.finance
-- Scroll Mainnet Dapp (V2) : https://scroll.layerbank.finance
-- Manta Mainnet Dapp (V2) : https://manta.layerbank.finance
-- B Squared Testnet Dapp (V2) : https://testnet.bsquared.layerbank.finance
-- Docs (V1) : https://docs.linea.layerbank.finance
-- Docs (V2) : https://docs.layerbank.finance
+- Linea Mainnet Dapp : https://linea.layerbank.finance
+- Scroll Mainnet Dapp : https://scroll.layerbank.finance
+- Manta Mainnet Dapp : https://manta.layerbank.finance
+- Mode Mainnet Dapp : https://mode.layerbank.finance
+- zkLink Nova Mainnet Dapp : https://zklink.layerbank.finance
+- B Squared Testnet Dapp : https://testnet.bsquared.layerbank.finance
+- Docs : https://docs.layerbank.finance
 
 ## Audit reports
 - V1 Audit by PeckShield : https://github.com/peckshield/publications/tree/master/audit_reports/PeckShield-Audit-Report-LineaBank-v1.0.pdf
 - V2 Audit by PeckShield : https://github.com/peckshield/publications/tree/master/audit_reports/PeckShield-Audit-Report-LayerBank-v1.0.pdf
 
 ## Deployments
-### Linea Mainnet
+### Linea Mainnet (V1)
 - LABToken : [0xB97F21D1f2508fF5c73E7B5AF02847640B1ff75d](https://lineascan.build/address/0xB97F21D1f2508fF5c73E7B5AF02847640B1ff75d)
 - Validator : [0x57d8311842F41ec811352F5d68616Fd51551a391](https://lineascan.build/address/0x57d8311842F41ec811352F5d68616Fd51551a391)
 - LABDistributor : [0x5D06067f86946620C326713b846DdC8B97470957](https://lineascan.build/address/0x5D06067f86946620C326713b846DdC8B97470957)
@@ -27,6 +28,16 @@
 - lWBTC : [0xEa0F73296a6147FB56bAE29306Aae0FFAfF9De5F](https://lineascan.build/address/0xEa0F73296a6147FB56bAE29306Aae0FFAfF9De5F)
 - lwstETH : [0xE33520c74bac3c537BfEEe0F65e80471F3d564b9](https://lineascan.build/address/0xE33520c74bac3c537BfEEe0F65e80471F3d564b9)
 - Locker : [0x14C5A2b562754eD412708a103FB9cB65B1b16494](https://lineascan.build/address/0x14C5A2b562754eD412708a103FB9cB65B1b16494)
+
+
+### Linea Mainnet (V2)
+- Core : [0x43Eac5BFEa14531B8DE0B334E123eA98325de866](https://lineascan.build/address/0x43Eac5BFEa14531B8DE0B334E123eA98325de866)
+- lETH : [0x9E9aec6a296f94C8530e2dD01FF3E9c61555D39a](https://lineascan.build/address/0x9E9aec6a296f94C8530e2dD01FF3E9c61555D39a)
+- lUSDC : [0x5924117c4a5e000312684A5e76E90cC93AdDdE6b](https://lineascan.build/address/0x5924117c4a5e000312684A5e76E90cC93AdDdE6b)
+- lWBTC : [0xCCba9Ac94531E15aA55D9065e398812F06B84F14](https://lineascan.build/address/0xCCba9Ac94531E15aA55D9065e398812F06B84F14)
+- lwstETH : [0x8FeFABe1b9A530D9d0f0Ef25e84a9D8B56aB2053](https://lineascan.build/address/0x8FeFABe1b9A530D9d0f0Ef25e84a9D8B56aB2053)
+- lezETH : [0x2c88A441418E06b9F3e565c2f866Fcb03c9409E2](https://lineascan.build/address/0x2c88A441418E06b9F3e565c2f866Fcb03c9409E2)
+- Leverager : [0xc98B936d7540ba67C2260916aE91b3EEB9eeFff3](https://lineascan.build/address/0xc98B936d7540ba67C2260916aE91b3EEB9eeFff3)
 
 
 ### Scroll Mainnet
@@ -42,6 +53,7 @@
 - lETH : [0x274C3795dadfEbf562932992bF241ae087e0a98C](https://scrollscan.com/address/0x274C3795dadfEbf562932992bF241ae087e0a98C)
 - lUSDC : [0x0D8F8e271DD3f2fC58e5716d3Ff7041dBe3F0688](https://scrollscan.com/address/0x0D8F8e271DD3f2fC58e5716d3Ff7041dBe3F0688)
 - lwstETH : [0xB6966083c7b68175B4BF77511608AEe9A80d2Ca4](https://scrollscan.com/address/0xB6966083c7b68175B4BF77511608AEe9A80d2Ca4)
+- lwrsETH : [0xec0ad3f43e85fc775a9c9b77f0f0aa7fe5a587d6](https://scrollscan.com/address/0xec0ad3f43e85fc775a9c9b77f0f0aa7fe5a587d6)
 - Leverager : [0x119F312c25a1cEb9e6708660A1D47D4034BB8441](https://scrollscan.com/address/0x119F312c25a1cEb9e6708660A1D47D4034BB8441)
 
 ### Manta Pacific Mainnet
@@ -77,8 +89,23 @@
 - lETH : [0xe855B8018C22A05F84724e93693caf166912aDD5](https://explorer.mode.network/address/0xe855B8018C22A05F84724e93693caf166912aDD5)
 - lUSDC : [0xBa6e89c9cDa3d72B7D8D5B05547a29f9BdBDBaec](https://explorer.mode.network/address/0xBa6e89c9cDa3d72B7D8D5B05547a29f9BdBDBaec)
 - lUSDT : [0xC5b9CB1A26Fb1f9b8e26D8D357Cb950f53Df4959](https://explorer.mode.network/address/0xC5b9CB1A26Fb1f9b8e26D8D357Cb950f53Df4959)
-- Leverager : [0xF0dCBa2dD51311b5AD5770573eDb8d39d39029E5](https://explorer.mode.network/address/0xF0dCBa2dD51311b5AD5770573eDb8d39d39029E5)
+- lezETH : [0xd97905cC56030a6E9b618d6e26Cc9Ee2eAA15948](https://explorer.mode.network/address/0xd97905cC56030a6E9b618d6e26Cc9Ee2eAA15948)
+- lweETH : [0xfd160B6818254AF48171a7731EbA26deE6F16902](https://explorer.mode.network/address/0xfd160B6818254AF48171a7731EbA26deE6F16902)
+- lSTONE : [0xC5b9CB1A26Fb1f9b8e26D8D357Cb950f53Df4959](https://explorer.mode.network/address/0xC5b9CB1A26Fb1f9b8e26D8D357Cb950f53Df4959)
+- Leverager : [0x6A0d9584D88D22BcaD7D4F83E7d6AB7949895DDF](https://explorer.mode.network/address/0x6A0d9584D88D22BcaD7D4F83E7d6AB7949895DDF)
 
+
+### zkLink Nova Mainnet
+- Validator : [0x9f28D29822ebC4389fDDa1aD4ac21781ECcD3BAc](https://explorer.zklink.io/address/0x9f28D29822ebC4389fDDa1aD4ac21781ECcD3BAc)
+- Core : [0x4Ac518DbF0CC730A1c880739CFa98fe0bB284959](https://explorer.zklink.io/address/0x4Ac518DbF0CC730A1c880739CFa98fe0bB284959)
+- PriceCalculator : [0x503CFB99feCFE28b52bbbb044d6b5C4d223096D4](https://explorer.zklink.io/address/0x503CFB99feCFE28b52bbbb044d6b5C4d223096D4)
+- RateModelSlope : [0xe7899E8152972e90E1BF3B37eE8bFBAD9E9f83d2](https://explorer.zklink.io/address/0xe7899E8152972e90E1BF3B37eE8bFBAD9E9f83d2)
+- lETH : [0xb666582F612692525C4027d2a8280Ac06a055a95](https://explorer.zklink.io/address/0xb666582F612692525C4027d2a8280Ac06a055a95)
+- lSTONE : [0x8c4ba925D899ccde6d3657fcd9416c819EDbef97](https://explorer.zklink.io/address/0x8c4ba925D899ccde6d3657fcd9416c819EDbef97)
+- lpufETH : [0xdd6105865380984716C6B2a1591F9643e6ED1C48](https://explorer.zklink.io/address/0xdd6105865380984716C6B2a1591F9643e6ED1C48)
+- lWBTC : [0xa04C6C48f32aBE11298e9228e7b34289a0068236](https://explorer.zklink.io/address/0xa04C6C48f32aBE11298e9228e7b34289a0068236)
+- lMANTA : [0x9f4baA696954EA954090231a582d535854B1b40E](https://explorer.zklink.io/address/0x9f4baA696954EA954090231a582d535854B1b40E)
+- Leverager : [0x59C1DA000F91a238FDb508E601fD871E409E5A9e](https://explorer.zklink.io/address/0x59C1DA000F91a238FDb508E601fD871E409E5A9e)
 
 ## Contacts
 - Twitter : [@LayerBankFi](https://twitter.com/LayerBankFi)
