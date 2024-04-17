@@ -96,7 +96,7 @@
 
 
 ### zkLink Nova Mainnet
-- Validator : [0x9f28D29822ebC4389fDDa1aD4ac21781ECcD3BAc](https://explorer.zklink.io/address/0x9f28D29822ebC4389fDDa1aD4ac21781ECcD3BAc)
+- Validator : [0x0bfA9B6B4f909b6B48CD1647501cE18BB0C0ceAC](https://explorer.zklink.io/address/0x0bfA9B6B4f909b6B48CD1647501cE18BB0C0ceAC)
 - Core : [0x4Ac518DbF0CC730A1c880739CFa98fe0bB284959](https://explorer.zklink.io/address/0x4Ac518DbF0CC730A1c880739CFa98fe0bB284959)
 - PriceCalculator : [0x503CFB99feCFE28b52bbbb044d6b5C4d223096D4](https://explorer.zklink.io/address/0x503CFB99feCFE28b52bbbb044d6b5C4d223096D4)
 - RateModelSlope : [0xe7899E8152972e90E1BF3B37eE8bFBAD9E9f83d2](https://explorer.zklink.io/address/0xe7899E8152972e90E1BF3B37eE8bFBAD9E9f83d2)
