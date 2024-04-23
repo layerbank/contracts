@@ -112,6 +112,14 @@
 - lUSDT : [0x245FB442F811f02D27BdebDEf23eD30810570aAE](https://explorer.zklink.io/address/0x245FB442F811f02D27BdebDEf23eD30810570aAE)
 - Leverager : [0x59C1DA000F91a238FDb508E601fD871E409E5A9e](https://explorer.zklink.io/address/0x59C1DA000F91a238FDb508E601fD871E409E5A9e)
 
+### BSquared Mainnet
+- Validator : [0xba2cB01253a5c97BC4b81C313Dd65588FE908525](https://mainnet-blockscout.bsquared.network/address/0xba2cB01253a5c97BC4b81C313Dd65588FE908525)
+- Core : [0x72f7a8eb9F83dE366AE166DC50F16074076C3Ea6](https://mainnet-blockscout.bsquared.network/address/0x72f7a8eb9F83dE366AE166DC50F16074076C3Ea6)
+- PriceCalculator : [0x1f5765c373b4505A2039c5A8a3eB407735Ea7552](https://mainnet-blockscout.bsquared.network/address/0x1f5765c373b4505A2039c5A8a3eB407735Ea7552)
+- RateModelSlope : [0x5478CAA24512E4865FC494B3996d319387f3ed58](https://mainnet-blockscout.bsquared.network/address/0x5478CAA24512E4865FC494B3996d319387f3ed58)
+- lBTC : [0xAaC19657558DcF4b3724231aC790FD22A6Dd5BEd](https://mainnet-blockscout.bsquared.network/address/0xAaC19657558DcF4b3724231aC790FD22A6Dd5BEd)
+- Leverager : [0x67016362527A13850fE7775b818777a930B5A3a2](https://mainnet-blockscout.bsquared.network/address/0x67016362527A13850fE7775b818777a930B5A3a2)
+
 ## Contacts
 - Twitter : [@LayerBankFi](https://twitter.com/LayerBankFi)
 - Discord : https://discord.com/invite/g8eNuudNxe
