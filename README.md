@@ -122,6 +122,11 @@
 
 ### BOB Mainnet
 - Validator : [0xC28083fEAFC667E033Dc178D88fcD710eA6c838c](https://explorer.gobob.xyz/address/0xC28083fEAFC667E033Dc178D88fcD710eA6c838c)
+- labToken : [0x6Bc3EDeeE5D182cd4d5d5b26F54fddA0fAB2b5D1](https://explorer.gobob.xyz/address/0x6Bc3EDeeE5D182cd4d5d5b26F54fddA0fAB2b5D1)
+- xLAB : [0xce584875A584485bFf208a4FC2C70CB7e98f98C3](https://explorer.gobob.xyz/address/0xce584875A584485bFf208a4FC2C70CB7e98f98C3)
+- labDistributor: [0x7851b2F6287e79fAf76F67A0dAd6846292983E0b](https://explorer.gobob.xyz/address/0x7851b2F6287e79fAf76F67A0dAd6846292983E0b)
+- rewardController: [0xC8485B4B7899e75149c74c18798B0Cc3487caB37](https://explorer.gobob.xyz/address/0xC8485B4B7899e75149c74c18798B0Cc3487caB37)
+- rebateDistributor: [0x1097cc6F09cc0731e596d91d8b3b50De331cB5A7](https://explorer.gobob.xyz/address/0x1097cc6F09cc0731e596d91d8b3b50De331cB5A7)
 - Core : [0x77cabFd057Bd7C81c011059F1bf74eC1fBeDa971](https://explorer.gobob.xyz/address/0x77cabFd057Bd7C81c011059F1bf74eC1fBeDa971)
 - PriceCalculator : [0x109F83CFC3164562B6fb1addf02Bfa65bF6f71BE](https://explorer.gobob.xyz/address/0x109F83CFC3164562B6fb1addf02Bfa65bF6f71BE)
 - RateModelSlope : [0x043962844E12555968777722e6ed2714C1851475](https://explorer.gobob.xyz/address/0x043962844E12555968777722e6ed2714C1851475)
