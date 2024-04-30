@@ -120,6 +120,18 @@
 - lBTC : [0xAaC19657558DcF4b3724231aC790FD22A6Dd5BEd](https://mainnet-blockscout.bsquared.network/address/0xAaC19657558DcF4b3724231aC790FD22A6Dd5BEd)
 - Leverager : [0x67016362527A13850fE7775b818777a930B5A3a2](https://mainnet-blockscout.bsquared.network/address/0x67016362527A13850fE7775b818777a930B5A3a2)
 
+### BOB Mainnet
+- Validator : [0xC28083fEAFC667E033Dc178D88fcD710eA6c838c](https://explorer.gobob.xyz/address/0xC28083fEAFC667E033Dc178D88fcD710eA6c838c)
+- Core : [0x77cabFd057Bd7C81c011059F1bf74eC1fBeDa971](https://explorer.gobob.xyz/address/0xC28083fEAFC667E033Dc178D88fcD710eA6c838c)
+- PriceCalculator : [0x109F83CFC3164562B6fb1addf02Bfa65bF6f71BE](https://explorer.gobob.xyz/address/0xC28083fEAFC667E033Dc178D88fcD710eA6c838c)
+- RateModelSlope : [0x043962844E12555968777722e6ed2714C1851475](https://explorer.gobob.xyz/address/0x043962844E12555968777722e6ed2714C1851475)
+- lWBTC : [0x0c1F45ADc1fC37eA2d47c2feB0a7E60671115fa4](https://explorer.gobob.xyz/address/0x0c1F45ADc1fC37eA2d47c2feB0a7E60671115fa4)
+- lETH : [0xbd00E7923775C781D1BF0cAE4e0de8EFe8B60ccB](https://explorer.gobob.xyz/address/0xbd00E7923775C781D1BF0cAE4e0de8EFe8B60ccB)
+- lUSDT : [0xDAbEb9602f1E0B112136675069016f79Eeda8e59](https://explorer.gobob.xyz/address/0xDAbEb9602f1E0B112136675069016f79Eeda8e59)
+- lSOV : [0x151d54Da06751C876308Adc0b10a92FE2824c8F9](https://explorer.gobob.xyz/address/0x151d54Da06751C876308Adc0b10a92FE2824c8F9)
+- lTBTC : [0x037598b71a8F27443be8E352a67F7F73C70eA423](https://explorer.gobob.xyz/address/0x037598b71a8F27443be8E352a67F7F73C70eA423)
+- Leverager : [0x51ACa2Cd4355227bEAE20a8a0a7e30b8f85CAa98](https://explorer.gobob.xyz/address/0x51ACa2Cd4355227bEAE20a8a0a7e30b8f85CAa98)
+
 ## Contacts
 - Twitter : [@LayerBankFi](https://twitter.com/LayerBankFi)
 - Discord : https://discord.com/invite/g8eNuudNxe
