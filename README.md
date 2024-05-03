@@ -118,6 +118,11 @@
 - PriceCalculator : [0x1f5765c373b4505A2039c5A8a3eB407735Ea7552](https://mainnet-blockscout.bsquared.network/address/0x1f5765c373b4505A2039c5A8a3eB407735Ea7552)
 - RateModelSlope : [0x5478CAA24512E4865FC494B3996d319387f3ed58](https://mainnet-blockscout.bsquared.network/address/0x5478CAA24512E4865FC494B3996d319387f3ed58)
 - lBTC : [0xAaC19657558DcF4b3724231aC790FD22A6Dd5BEd](https://mainnet-blockscout.bsquared.network/address/0xAaC19657558DcF4b3724231aC790FD22A6Dd5BEd)
+- lETH : [0x53bda0574BE207745f5Ce72706f4DDF59f0d6139](https://mainnet-blockscout.bsquared.network/address/0x53bda0574BE207745f5Ce72706f4DDF59f0d6139)
+- lBSTONE : [0x8b03af6CA293FeE5A64497B8D50A5186a5BEcAA9](https://mainnet-blockscout.bsquared.network/address/0x8b03af6CA293FeE5A64497B8D50A5186a5BEcAA9)
+- lUSDC : [0xe2417CCe3Fd8C01f929C9d3A5B6Dfeab3FAA4FF2](https://mainnet-blockscout.bsquared.network/address/0xe2417CCe3Fd8C01f929C9d3A5B6Dfeab3FAA4FF2)
+- lFDUSD : [0xAaC19657558DcF4b3724231aC790FD22A6Dd5BEd](https://mainnet-blockscout.bsquared.network/address/0xAaC19657558DcF4b3724231aC790FD22A6Dd5BEd)
+- lUSDT : [0x1DfA1A1A9e746796834eEa85D714801b2Dfb87fF](https://mainnet-blockscout.bsquared.network/address/0x1DfA1A1A9e746796834eEa85D714801b2Dfb87fF)
 - Leverager : [0x67016362527A13850fE7775b818777a930B5A3a2](https://mainnet-blockscout.bsquared.network/address/0x67016362527A13850fE7775b818777a930B5A3a2)
 
 ### BOB Mainnet
