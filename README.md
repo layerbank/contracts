@@ -94,6 +94,8 @@
 - lSTONE : [0x6A0d9584D88D22BcaD7D4F83E7d6AB7949895DDF](https://explorer.mode.network/address/0x6A0d9584D88D22BcaD7D4F83E7d6AB7949895DDF)
 - lMBTC: [0x59dd441184024a77fd17e68f07E242622806c256](https://explorer.mode.network/address/0x59dd441184024a77fd17e68f07E242622806c256)
 - lwrsETH: [0x66a5e18E36bfeA86074A047954fEC7c94ced366E](https://explorer.mode.network/address/0x66a5e18E36bfeA86074A047954fEC7c94ced366E)
+- lMODE: [0x7c57DBA8512E2EbeeAc37Aa65F51256B9326cc4d](https://explorer.mode.network/address/0x7c57DBA8512E2EbeeAc37Aa65F51256B9326cc4d)
+- lweETH.mode: [0xbd9eDF764BC1f219c124aD5CFa7084BbeD124aa8](https://explorer.mode.network/address/0xbd9eDF764BC1f219c124aD5CFa7084BbeD124aa8)
 - Leverager : [0x6A0d9584D88D22BcaD7D4F83E7d6AB7949895DDF](https://explorer.mode.network/address/0x6A0d9584D88D22BcaD7D4F83E7d6AB7949895DDF)
 
 
