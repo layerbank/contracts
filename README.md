@@ -144,6 +144,19 @@
 - lTBTC : [0x037598b71a8F27443be8E352a67F7F73C70eA423](https://explorer.gobob.xyz/address/0x037598b71a8F27443be8E352a67F7F73C70eA423)
 - Leverager : [0x51ACa2Cd4355227bEAE20a8a0a7e30b8f85CAa98](https://explorer.gobob.xyz/address/0x51ACa2Cd4355227bEAE20a8a0a7e30b8f85CAa98)
 
+### Bitlayer Mainnet
+- Validator : [0xc7C26EFa9Dd5b4C3c19A2DeA276b7c8607E19B30](https://www.btrscan.com/address/0xc7C26EFa9Dd5b4C3c19A2DeA276b7c8607E19B30)
+- Core : [0xf1E25704e75dA0496B46Bf4E3856c5480A3c247F](https://www.btrscan.com/address/0xf1E25704e75dA0496B46Bf4E3856c5480A3c247F)
+- PriceCalculator : [0x6d0cBF30D68B8f65D848f210d7F776dCbD0a822f](https://www.btrscan.com/address/0x6d0cBF30D68B8f65D848f210d7F776dCbD0a822f)
+- RateModelSlope : [0xd2740958Cf90072f540b934A03ca9c6A884cadfE](https://www.btrscan.com/address/0xd2740958Cf90072f540b934A03ca9c6A884cadfE)
+- RateModelSlope : [0x04A4697415147a400a45B913ef6098Aa7561C544](https://www.btrscan.com/address/0x04A4697415147a400a45B913ef6098Aa7561C544)
+- lBTC : [0x1471b4FAc13d42F3447fBA145bdfE95C6e7e7540](https://www.btrscan.com/address/0x1471b4FAc13d42F3447fBA145bdfE95C6e7e7540)
+- lETH : [0x8DbFfA0881CA4f5BFe7c36451c6A2CcF2A1b0316](https://www.btrscan.com/address/0x8DbFfA0881CA4f5BFe7c36451c6A2CcF2A1b0316)
+- lBITUSD : [0xe0d50A5eAA1dc9270baA24F2edEE5EC1A8D6A1E1](https://www.btrscan.com/address/0xe0d50A5eAA1dc9270baA24F2edEE5EC1A8D6A1E1)
+- lUSDC : [0x870c1A416872841f0D2B70a3eED3cB92065E5a07](https://www.btrscan.com/address/0x870c1A416872841f0D2B70a3eED3cB92065E5a07)
+- lUSDT : [0x8269390D7496678C5DC56d18C31c052B12E632b4](https://www.btrscan.com/address/0x8269390D7496678C5DC56d18C31c052B12E632b4)
+- Leverager : [0xc876Cd18c3A7CA6EeF115DEb5f4EcD95e0Fa2e76](https://www.btrscan.com/address/0xc876Cd18c3A7CA6EeF115DEb5f4EcD95e0Fa2e76)
+
 ## Contacts
 - Twitter : [@LayerBankFi](https://twitter.com/LayerBankFi)
 - Discord : https://discord.com/invite/g8eNuudNxe
