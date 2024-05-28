@@ -152,6 +152,9 @@
 - lUSDT : [0xDAbEb9602f1E0B112136675069016f79Eeda8e59](https://explorer.gobob.xyz/address/0xDAbEb9602f1E0B112136675069016f79Eeda8e59)
 - lSOV : [0x151d54Da06751C876308Adc0b10a92FE2824c8F9](https://explorer.gobob.xyz/address/0x151d54Da06751C876308Adc0b10a92FE2824c8F9)
 - lTBTC : [0x037598b71a8F27443be8E352a67F7F73C70eA423](https://explorer.gobob.xyz/address/0x037598b71a8F27443be8E352a67F7F73C70eA423)
+- lUSDC : [0x462EBb8395b6c08661b3d9F0Ca8819527BCF3Db3](https://explorer.gobob.xyz/address/0x462EBb8395b6c08661b3d9F0Ca8819527BCF3Db3)
+- lSTONE : [0xe714576abA1d46F54BD00ceb04c4B9c384e054ea](https://explorer.gobob.xyz/address/0xe714576abA1d46F54BD00ceb04c4B9c384e054ea)
+- lwstETH : [0xf30E2dD11128Fd745C235b2F59Bf56E16d6d87dB](https://explorer.gobob.xyz/address/0xf30E2dD11128Fd745C235b2F59Bf56E16d6d87dB)
 - Leverager : [0x51ACa2Cd4355227bEAE20a8a0a7e30b8f85CAa98](https://explorer.gobob.xyz/address/0x51ACa2Cd4355227bEAE20a8a0a7e30b8f85CAa98)
 
 ### Bitlayer Mainnet
