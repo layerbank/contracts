@@ -122,7 +122,11 @@
 - lWBTC : [0x5Aa48B2DFD3Fd7cF1a3374AE1b0CCe54329E4bCf](https://explorer.zklink.io/address/0x5Aa48B2DFD3Fd7cF1a3374AE1b0CCe54329E4bCf)
 - lUSDC : [0xE00c509c4a54b8b775Ea5643F48de366a074b114](https://explorer.zklink.io/address/0xE00c509c4a54b8b775Ea5643F48de366a074b114)
 - lUSDT : [0x245FB442F811f02D27BdebDEf23eD30810570aAE](https://explorer.zklink.io/address/0x245FB442F811f02D27BdebDEf23eD30810570aAE)
+- lBTCT : [0xe6052ce0B230e17CAeabAB46cb2777ED3dC855Db](https://explorer.zklink.io/address/0xe6052ce0B230e17CAeabAB46cb2777ED3dC855Db)
+- lMBTC : [0x62681d33f1440F47c668905E9660a7e5da32C845](https://explorer.zklink.io/address/0x62681d33f1440F47c668905E9660a7e5da32C845)
+- lSolvBTC : [0x24bCF64b02fB00b8160351AD117C2A359584eb08](https://explorer.zklink.io/address/0x24bCF64b02fB00b8160351AD117C2A359584eb08)
 - Leverager : [0x59C1DA000F91a238FDb508E601fD871E409E5A9e](https://explorer.zklink.io/address/0x59C1DA000F91a238FDb508E601fD871E409E5A9e)
+
 
 ### BSquared Mainnet
 - Validator : [0xba2cB01253a5c97BC4b81C313Dd65588FE908525](https://mainnet-blockscout.bsquared.network/address/0xba2cB01253a5c97BC4b81C313Dd65588FE908525)
@@ -136,6 +140,7 @@
 - lFDUSD : [0x1DfA1A1A9e746796834eEa85D714801b2Dfb87fF](https://mainnet-blockscout.bsquared.network/address/0x1DfA1A1A9e746796834eEa85D714801b2Dfb87fF)
 - lUSDT : [0xA9Be5906974698A9C743E881B0ACc2954399ff2a](https://mainnet-blockscout.bsquared.network/address/0xA9Be5906974698A9C743E881B0ACc2954399ff2a)
 - Leverager : [0x67016362527A13850fE7775b818777a930B5A3a2](https://mainnet-blockscout.bsquared.network/address/0x67016362527A13850fE7775b818777a930B5A3a2)
+
 
 ### BOB Mainnet
 - Validator : [0xC28083fEAFC667E033Dc178D88fcD710eA6c838c](https://explorer.gobob.xyz/address/0xC28083fEAFC667E033Dc178D88fcD710eA6c838c)
@@ -157,6 +162,7 @@
 - lwstETH : [0xf30E2dD11128Fd745C235b2F59Bf56E16d6d87dB](https://explorer.gobob.xyz/address/0xf30E2dD11128Fd745C235b2F59Bf56E16d6d87dB)
 - Leverager : [0x51ACa2Cd4355227bEAE20a8a0a7e30b8f85CAa98](https://explorer.gobob.xyz/address/0x51ACa2Cd4355227bEAE20a8a0a7e30b8f85CAa98)
 
+
 ### Bitlayer Mainnet
 - Validator : [0xc7C26EFa9Dd5b4C3c19A2DeA276b7c8607E19B30](https://www.btrscan.com/address/0xc7C26EFa9Dd5b4C3c19A2DeA276b7c8607E19B30)
 - Core : [0xf1E25704e75dA0496B46Bf4E3856c5480A3c247F](https://www.btrscan.com/address/0xf1E25704e75dA0496B46Bf4E3856c5480A3c247F)
@@ -169,6 +175,7 @@
 - lUSDC : [0x870c1A416872841f0D2B70a3eED3cB92065E5a07](https://www.btrscan.com/address/0x870c1A416872841f0D2B70a3eED3cB92065E5a07)
 - lUSDT : [0x8269390D7496678C5DC56d18C31c052B12E632b4](https://www.btrscan.com/address/0x8269390D7496678C5DC56d18C31c052B12E632b4)
 - Leverager : [0xc876Cd18c3A7CA6EeF115DEb5f4EcD95e0Fa2e76](https://www.btrscan.com/address/0xc876Cd18c3A7CA6EeF115DEb5f4EcD95e0Fa2e76)
+
 
 ## Contacts
 - Twitter : [@LayerBankFi](https://twitter.com/LayerBankFi)
