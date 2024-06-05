@@ -139,6 +139,9 @@
 - lUSDC : [0xe2417CCe3Fd8C01f929C9d3A5B6Dfeab3FAA4FF2](https://mainnet-blockscout.bsquared.network/address/0xe2417CCe3Fd8C01f929C9d3A5B6Dfeab3FAA4FF2)
 - lFDUSD : [0x1DfA1A1A9e746796834eEa85D714801b2Dfb87fF](https://mainnet-blockscout.bsquared.network/address/0x1DfA1A1A9e746796834eEa85D714801b2Dfb87fF)
 - lUSDT : [0xA9Be5906974698A9C743E881B0ACc2954399ff2a](https://mainnet-blockscout.bsquared.network/address/0xA9Be5906974698A9C743E881B0ACc2954399ff2a)
+- luBTC : [0xA692556548186E0bB2FED372A021F468591A9a03](https://mainnet-blockscout.bsquared.network/address/0xA692556548186E0bB2FED372A021F468591A9a03)
+- lMBTC : [0x438845c18B1358835eB327FB72189d526BED454D](https://mainnet-blockscout.bsquared.network/address/0x438845c18B1358835eB327FB72189d526BED454D)
+- lSolvBTCm : [0x98D685CDDbC099E07a605483763DAb9a2DaE4307](https://mainnet-blockscout.bsquared.network/address/0x98D685CDDbC099E07a605483763DAb9a2DaE4307)
 - Leverager : [0x67016362527A13850fE7775b818777a930B5A3a2](https://mainnet-blockscout.bsquared.network/address/0x67016362527A13850fE7775b818777a930B5A3a2)
 
 
