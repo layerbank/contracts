@@ -89,7 +89,7 @@
 ### Mode Mainnet
 - LABToken : [0xFE67e16313f4B38743a153f74D5762F7C83e59aE](https://explorer.mode.network/address/0xFE67e16313f4B38743a153f74D5762F7C83e59aE)
 - xLAB : [0xD4Ab4799E66C40485b136580FFa233f7bD2a9f8B](https://explorer.mode.network/address/0xD4Ab4799E66C40485b136580FFa233f7bD2a9f8B)
-- Validator : [0x8aCBBEafD432b86A0772A2Ae16df87885f062CDb](https://explorer.mode.network/address/0x8aCBBEafD432b86A0772A2Ae16df87885f062CDb)
+- Validator : [0x5AE221cEC86BCdD0cDC616b6C2BBD95d0e68030f](https://explorer.mode.network/address/0x5AE221cEC86BCdD0cDC616b6C2BBD95d0e68030f)
 - LABDistributor : [0xe8C3BA0c2AC39F9d97BCEBf913e480b55d4C1AeC](https://explorer.mode.network/address/0xe8C3BA0c2AC39F9d97BCEBf913e480b55d4C1AeC)
 - RewardController : [0xA2c4fF1500F7E5137d2299642118dF7A2C0Ba82a](https://explorer.mode.network/address/0xA2c4fF1500F7E5137d2299642118dF7A2C0Ba82a)
 - RebateDistributor : [0x67d21527b227ec286409c6dd28D4704424cE006f](https://explorer.mode.network/address/0x67d21527b227ec286409c6dd28D4704424cE006f)
