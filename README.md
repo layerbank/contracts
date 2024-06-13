@@ -59,6 +59,7 @@
 - lETH : [0x274C3795dadfEbf562932992bF241ae087e0a98C](https://scrollscan.com/address/0x274C3795dadfEbf562932992bF241ae087e0a98C)
 - lUSDC : [0x0D8F8e271DD3f2fC58e5716d3Ff7041dBe3F0688](https://scrollscan.com/address/0x0D8F8e271DD3f2fC58e5716d3Ff7041dBe3F0688)
 - lwstETH : [0xB6966083c7b68175B4BF77511608AEe9A80d2Ca4](https://scrollscan.com/address/0xB6966083c7b68175B4BF77511608AEe9A80d2Ca4)
+- lwrsETH : [0xec0ad3f43e85fc775a9c9b77f0f0aa7fe5a587d6](https://scrollscan.com/address/0xec0ad3f43e85fc775a9c9b77f0f0aa7fe5a587d6)
 - lSTONE : [0xE5C40a3331d4Fb9A26F5e48b494813d977ec0A8E](https://scrollscan.com/address/0xE5C40a3331d4Fb9A26F5e48b494813d977ec0A8E)
 - luniETH : [0xBd1d62e74c6d165ccae6d161588a3768023DCc18](https://scrollscan.com/address/0xBd1d62e74c6d165ccae6d161588a3768023DCc18)
 - lWBTC : [0xc40D6957B8110eC55f0F1A20d7D3430e1d8Aa4cf](https://scrollscan.com/address/0xc40D6957B8110eC55f0F1A20d7D3430e1d8Aa4cf)
