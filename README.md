@@ -70,6 +70,7 @@
 - lpufETH : [0x576D2072403Cc35a2d5CdA140C07Fef557065Dd2](https://scrollscan.com/address/0x576D2072403Cc35a2d5CdA140C07Fef557065Dd2)
 - lSolvBTCm : [0x0f67E84dDD9F68bA7bef6eb6c9F084721De3aA95](https://scrollscan.com/address/0x0f67E84dDD9F68bA7bef6eb6c9F084721De3aA95)
 - lSolvBTCb : [0xe4A759c228C11A71e828492391c98fC0f3E8524D](https://scrollscan.com/address/0xe4A759c228C11A71e828492391c98fC0f3E8524D)
+- lweETH : [0x3335dbeFE7d40d43B1891109294938336f429a4C](https://scrollscan.com/address/0x3335dbeFE7d40d43B1891109294938336f429a4C)
 
 ### Manta Pacific Mainnet
 - LABToken : [0x20A512dbdC0D006f46E6cA11329034Eb3d18c997](https://pacific-explorer.manta.network/address/0x20A512dbdC0D006f46E6cA11329034Eb3d18c997)
