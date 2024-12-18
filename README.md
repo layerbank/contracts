@@ -189,6 +189,19 @@
 - lUSDT : [0x8269390D7496678C5DC56d18C31c052B12E632b4](https://www.btrscan.com/address/0x8269390D7496678C5DC56d18C31c052B12E632b4)
 - Leverager : [0xc876Cd18c3A7CA6EeF115DEb5f4EcD95e0Fa2e76](https://www.btrscan.com/address/0xc876Cd18c3A7CA6EeF115DEb5f4EcD95e0Fa2e76)
 
+### Mint Mainnet
+- Validator : [0xcB43E12696fc71319E0979DF3371Fb15b233f577](https://mintscan.org/address/0xcB43E12696fc71319E0979DF3371Fb15b233f577)
+- Core : [0x0f225d10dd29D4703D42C5E93440F828bf04D150](https://mintscan.org/address/0x0f225d10dd29D4703D42C5E93440F828bf04D150)
+- PriceCalculator : [0x0f51d16Eac6D78bDf43226E21992c6731bc504Df](https://mintscan.org/address/0x0f51d16Eac6D78bDf43226E21992c6731bc504Df)
+- RateModelSlope : [0x7FdA383E99474C71535f4A88a8B73934BB4DDB0B](https://mintscan.org/address/0x7FdA383E99474C71535f4A88a8B73934BB4DDB0B)
+- RateModelSlope : [0x11c4f877147689Cdd06b4f335e0D4bcF58239F3f](https://mintscan.org/address/0x11c4f877147689Cdd06b4f335e0D4bcF58239F3f)
+- RateModelSlope : [0x20dF19F03c6409547514fc1dc27141d5BF435e62](https://mintscan.org/address/0x20dF19F03c6409547514fc1dc27141d5BF435e62)
+- lETH : [0xe2d2F9e28a0e4505097a4d7a6556196CDd92231d](https://mintscan.org/address/0xe2d2F9e28a0e4505097a4d7a6556196CDd92231d)
+- lUSDC : [0x7D4530B054300e57f3AF1eF8d4f8138f95F7820E](https://mintscan.org/address/0x7D4530B054300e57f3AF1eF8d4f8138f95F7820E)
+- lUSDT : [0xD15c60327A529D76416E9dcfe0A535a6B5F3cFD7](https://mintscan.org/address/0xD15c60327A529D76416E9dcfe0A535a6B5F3cFD7)
+- lrnETH : [0x0B3883923e3CB2c677eea574240E99B8833aBf19](https://mintscan.org/address/0x0B3883923e3CB2c677eea574240E99B8833aBf19)
+- Leverager : [0xbD5939c137cc0B47F37d04f431de1Df7b8d4f564](https://mintscan.org/address/0xbD5939c137cc0B47F37d04f431de1Df7b8d4f564)
+
 
 ## Contacts
 - Twitter : [@LayerBankFi](https://twitter.com/LayerBankFi)
