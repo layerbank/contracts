@@ -202,6 +202,21 @@
 - lrnETH : [0x0B3883923e3CB2c677eea574240E99B8833aBf19](https://mintscan.org/address/0x0B3883923e3CB2c677eea574240E99B8833aBf19)
 - Leverager : [0xbD5939c137cc0B47F37d04f431de1Df7b8d4f564](https://mintscan.org/address/0xbD5939c137cc0B47F37d04f431de1Df7b8d4f564)
 
+### Taiko Mainnet
+- Validator : [0xe493eDEf6d58a934d077c11b781e37e19eBc288c](https://taikoexplorer.com/address/0xe493eDEf6d58a934d077c11b781e37e19eBc288c)
+- Core : [0x803a61d82BaD2743bE35Be5dC6DEA0CccE82C056](https://taikoexplorer.com/address/0x803a61d82BaD2743bE35Be5dC6DEA0CccE82C056)
+- PriceCalculator : [0xD8a07C96B497E4742aea2ccbB5E50D8Fe693320D](https://taikoexplorer.com/address/0xD8a07C96B497E4742aea2ccbB5E50D8Fe693320D)
+- RateModelSlope : [0x544830458f820F7aa925096B36C399862bD657E3](https://taikoexplorer.com/address/0x544830458f820F7aa925096B36C399862bD657E3)
+- RateModelSlope : [0x2ab863C976A44FD6eB3bb0d92E53a4Ad72C585Db](https://taikoexplorer.com/address/0x2ab863C976A44FD6eB3bb0d92E53a4Ad72C585Db)
+- RateModelSlope : [0x0a44eaC7e24f070516228d45D654e804c73832B5](https://taikoexplorer.com/address/0x0a44eaC7e24f070516228d45D654e804c73832B5)
+- lETH : [0x93DF9b0040F9D58d46e775421839c6CAEe0d2314](https://taikoexplorer.com/address/0x93DF9b0040F9D58d46e775421839c6CAEe0d2314)
+- lUSDC : [0x70248E4d4AF563Be753D1CefFBD8eb131972EED0](https://taikoexplorer.com/address/0x70248E4d4AF563Be753D1CefFBD8eb131972EED0)
+- lTAIKO : [0x247DFa2D84680A494965cDBB6005017D1f3CCF9C](https://taikoexplorer.com/address/0x247DFa2D84680A494965cDBB6005017D1f3CCF9C)
+- lMBTC : [0x335917b510b24A953D5b22A5A5EFFc52892a63ec](https://taikoexplorer.com/address/0x335917b510b24A953D5b22A5A5EFFc52892a63ec)
+- lSolvBTC : [0xBf6803995EFF860C5d880D36AdE9884791F2C38b](https://taikoexplorer.com/address/0xBf6803995EFF860C5d880D36AdE9884791F2C38b)
+- lSolvBTCbbn : [0xC58c6B4f1ded2056030Ad40f658Ccb5067f3ddc7](https://taikoexplorer.com/address/0xC58c6B4f1ded2056030Ad40f658Ccb5067f3ddc7)
+- Leverager : [0xd3Af5D4491aC64C97818B3bCB0D9BbeecC248890](https://taikoexplorer.com/address/0xd3Af5D4491aC64C97818B3bCB0D9BbeecC248890)
+
 
 ## Contacts
 - Twitter : [@LayerBankFi](https://twitter.com/LayerBankFi)
