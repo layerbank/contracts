@@ -240,6 +240,23 @@
 - lwBETH : [0xe07492f13D67bff89a82eA0102FB70eaC49B0CaE](https://bscscan.com/address/0xe07492f13D67bff89a82eA0102FB70eaC49B0CaE)
 - lXRP : [0xF2794eFBf9C510f107928e1400eb2A108252725d](https://bscscan.com/address/0xF2794eFBf9C510f107928e1400eb2A108252725d)
 
+### Morph Mainnet
+- Validator : [0xDeC15D98f4ab835A3f6DF01489BC820E037C4e04](https://explorer.morphl2.io/address/0xDeC15D98f4ab835A3f6DF01489BC820E037C4e04)
+- Core : [0xD48c646CF9B011D97E31770873985ADD8ed7371c]([https://explorer.morphl2.io/address/0xD48c646CF9B011D97E31770873985ADD8ed7371c)
+- PriceCalculator: [0xE40E025A076E2cCf2c3384F439834870Db1A1f24]([https://explorer.morphl2.io/address/0xE40E025A076E2cCf2c3384F439834870Db1A1f24)
+- RateModelSlope : [0x2914f7B83878E30F4A33e2a7a36FBc5fAb06E7Ae](https://bscscan.com/address/0x2914f7B83878E30F4A33e2a7a36FBc5fAb06E7Ae)
+- RateModelSlope : [0x418a9681e51F7DfB01f3bb89E40BccE6fD6BE53e](https://bscscan.com/address/0x418a9681e51F7DfB01f3bb89E40BccE6fD6BE53e)
+- RateModelSlope : [0xADc1638C74b6B2a698DFa2339B85934CB7ea79E1](https://bscscan.com/address/0xADc1638C74b6B2a698DFa2339B85934CB7ea79E1)
+- lETH : [0xCaC5b628cE1921b4D8347ada683b25bEC3316B5c]([https://explorer.morphl2.io/address/0xCaC5b628cE1921b4D8347ada683b25bEC3316B5c)
+- lBGB : [0x86EB1C6E2c0A4B382406245da921d944DCA6199F]([https://explorer.morphl2.io/address/0x86EB1C6E2c0A4B382406245da921d944DCA6199F)
+- lpumpBTC : [0x6407631E2152cb4240a8f8FCD0A8514163424358]([https://explorer.morphl2.io/address/0x6407631E2152cb4240a8f8FCD0A8514163424358)
+- lUSDC : [0x83397E8Aa43220cA5A9F0F2ea9411C51a2881C9b]([https://explorer.morphl2.io/address/0x83397E8Aa43220cA5A9F0F2ea9411C51a2881C9b)
+- lUSDT : [0x91f79e1A82d52a9E39aE59B0227C1579611a936B]([https://explorer.morphl2.io/address/0x91f79e1A82d52a9E39aE59B0227C1579611a936B)
+- lUSDe : [0xe5bfA89c0283b64E2A7E02f6A8A2A4749C0bDe7E]([https://explorer.morphl2.io/address/0xe5bfA89c0283b64E2A7E02f6A8A2A4749C0bDe7E)
+- lWBTC : [0x3DE4D21E48B4BFD0BA2E42cdf44e2Db794168ef0]([https://explorer.morphl2.io/address/0x3DE4D21E48B4BFD0BA2E42cdf44e2Db794168ef0)
+- lweETH : [0xB32abF6D8c33F5e7423F980EEC307443e3f81d46]([https://explorer.morphl2.io/address/0xB32abF6D8c33F5e7423F980EEC307443e3f81d46)
+
+
 ## Contacts
 - Twitter : [@LayerBankFi](https://twitter.com/LayerBankFi)
 - Discord : https://discord.com/invite/g8eNuudNxe
