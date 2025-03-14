@@ -257,7 +257,7 @@
 - lWBTC : [0x3DE4D21E48B4BFD0BA2E42cdf44e2Db794168ef0](https://explorer.morphl2.io/address/0x3DE4D21E48B4BFD0BA2E42cdf44e2Db794168ef0)
 - lweETH : [0xB32abF6D8c33F5e7423F980EEC307443e3f81d46](https://explorer.morphl2.io/address/0xB32abF6D8c33F5e7423F980EEC307443e3f81d46)
 
-### Morph Mainnet
+### Hemi Mainnet
 - Validator : [0x99fbfC4E3355cEE040CB88192880AFda8A3F8f9F](https://explorer.hemi.xyz/address/0x99fbfC4E3355cEE040CB88192880AFda8A3F8f9F)
 - Core : [0x16B3A05f1adaCa8F028AAd7C5B0475cC512a0619](https://explorer.hemi.xyz/address/0x16B3A05f1adaCa8F028AAd7C5B0475cC512a0619)
 - PriceCalculator: [0x9c5973Fbbe1C5C4E75f435f47a046663Cc613B6c](https://explorer.hemi.xyz/address/0x9c5973Fbbe1C5C4E75f435f47a046663Cc613B6c)
