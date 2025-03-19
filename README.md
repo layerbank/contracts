@@ -256,6 +256,7 @@
 - lUSDe : [0xe5bfA89c0283b64E2A7E02f6A8A2A4749C0bDe7E](https://explorer.morphl2.io/address/0xe5bfA89c0283b64E2A7E02f6A8A2A4749C0bDe7E)
 - lWBTC : [0x3DE4D21E48B4BFD0BA2E42cdf44e2Db794168ef0](https://explorer.morphl2.io/address/0x3DE4D21E48B4BFD0BA2E42cdf44e2Db794168ef0)
 - lweETH : [0xB32abF6D8c33F5e7423F980EEC307443e3f81d46](https://explorer.morphl2.io/address/0xB32abF6D8c33F5e7423F980EEC307443e3f81d46)
+- lmphBTC : [0x69F78aAb5e865A897cee2BaB97DEAe6B6bF76F08](https://explorer.morphl2.io/address/0x69F78aAb5e865A897cee2BaB97DEAe6B6bF76F08)
 
 ### Hemi Mainnet
 - Validator : [0x99fbfC4E3355cEE040CB88192880AFda8A3F8f9F](https://explorer.hemi.xyz/address/0x99fbfC4E3355cEE040CB88192880AFda8A3F8f9F)
@@ -279,6 +280,7 @@
 - lhemiBTC : [0x5a8C91F3e5dAc6992e0FaEcBc2e954321f67C96d](https://explorer.hemi.xyz/address/0x5a8C91F3e5dAc6992e0FaEcBc2e954321f67C96d)
 - lVUSD : [0xb30A18834FD11baF0f58a02820cff00E2d601759](https://explorer.hemi.xyz/address/0xb30A18834FD11baF0f58a02820cff00E2d601759)
 - lbrBTC : [0x1E34282B1048D0675b13c191A0A75e3D809eCF9d](https://explorer.hemi.xyz/address/0x1E34282B1048D0675b13c191A0A75e3D809eCF9d)
+- lhBTC : [0x9A52655b2e41b93aFf924D5aF7CD243D037dCab6](https://explorer.hemi.xyz/address/0x9A52655b2e41b93aFf924D5aF7CD243D037dCab6)
 
 
 ## Contacts
