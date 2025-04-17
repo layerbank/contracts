@@ -6,32 +6,20 @@ import "../library/Constant.sol";
 
 interface ILABDistributor {
     /* ========== EVENTS ========== */
-    event DistributionSpeedUpdated(
-        address indexed gToken,
-        uint256 supplySpeed,
-        uint256 borrowSpeed
-    );
+    event DistributionSpeedUpdated(address indexed lToken, uint256 supplySpeed, uint256 borrowSpeed);
     event Claimed(address indexed user, uint256 amount);
     event Compound(address indexed user, uint256 amount);
 
-    function accuredLAB(
-        address[] calldata markets,
-        address account
-    ) external view returns (uint);
+    function accuredLAB(address[] calldata markets, address account) external view returns (uint);
 
-    function distributionInfoOf(
-        address market
-    ) external view returns (Constant.DistributionInfo memory);
+    function distributionInfoOf(address market) external view returns (Constant.DistributionInfo memory);
 
     function accountDistributionInfoOf(
         address market,
         address account
     ) external view returns (Constant.DistributionAccountInfo memory);
 
-    function apyDistributionOf(
-        address market,
-        address account
-    ) external view returns (Constant.DistributionAPY memory);
+    function apyDistributionOf(address market, address account) external view returns (Constant.DistributionAPY memory);
 
     function boostedRatioOf(
         address market,
@@ -42,19 +30,15 @@ interface ILABDistributor {
 
     function notifyBorrowUpdated(address market, address user) external;
 
-    function notifyTransferred(
-        address qToken,
-        address sender,
-        address receiver
-    ) external;
+    function notifyTransferred(address qToken, address sender, address receiver) external;
 
     function claim(address[] calldata markets, address account) external;
 
-    function kick(address user) external;
+    function claimBehalf(address[] calldata markets, address[] calldata accounts) external;
 
     function updateAccountBoostedInfo(address user) external;
 
-    function compound(address[] calldata markets, address account) external;
+    function compound(address[] calldata markets, address account, uint256 lockDuration) external;
 
     function pause() external;
 

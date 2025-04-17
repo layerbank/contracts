@@ -14,15 +14,10 @@ import "../interfaces/IRebateDistributor.sol";
 import "../interfaces/IPriceCalculator.sol";
 import "../interfaces/ICore.sol";
 import "../interfaces/ILToken.sol";
-import "../interfaces/ILocker.sol";
+import "../interfaces/IxLAB.sol";
 import "../interfaces/IBEP20.sol";
 
-contract RebateDistributor is
-    IRebateDistributor,
-    Ownable,
-    ReentrancyGuard,
-    Pausable
-{
+contract RebateDistributor is IRebateDistributor, Ownable, ReentrancyGuard, Pausable {
     using SafeMath for uint256;
     using SafeToken for address;
 
@@ -35,9 +30,9 @@ contract RebateDistributor is
     /* ========== STATE VARIABLES ========== */
 
     ICore public core;
-    ILocker public locker;
+    IxLAB public xLAB;
     IPriceCalculator public priceCalc;
-    address public lab;
+    address public LAB;
 
     Constant.RebateCheckpoint[] public rebateCheckpoints;
     address public keeper;
@@ -47,33 +42,25 @@ contract RebateDistributor is
     mapping(address => uint256) private userCheckpoint;
     uint256 private adminCheckpoint;
 
+    // initializer
     bool public initialized;
 
     /* ========== MODIFIERS ========== */
 
+    /// @dev msg.sender 가 core address 인지 검증
     modifier onlyCore() {
-        require(
-            msg.sender == address(core),
-            "RebateDistributor: only core contract"
-        );
+        require(msg.sender == address(core), "RebateDistributor: only core contract");
         _;
     }
 
     modifier onlyKeeper() {
-        require(
-            msg.sender == keeper || msg.sender == owner(),
-            "RebateDistributor: caller is not the owner or keeper"
-        );
+        require(msg.sender == keeper || msg.sender == owner(), "RebateDistributor: caller is not the owner or keeper");
         _;
     }
 
     /* ========== EVENTS ========== */
 
-    event RebateClaimed(
-        address indexed user,
-        uint256[] marketFees,
-        uint256 totalLabAmount
-    );
+    event RebateClaimed(address indexed user, uint256[] marketFees, uint256 totalLabAmount);
     event AdminFeeRateUpdated(uint256 newAdminFeeRate);
     event AdminRebateTreasuryUpdated(address newTreasury);
     event KeeperUpdated(address newKeeper);
@@ -89,26 +76,20 @@ contract RebateDistributor is
 
     function initialize(
         address _core,
-        address _locker,
+        address _xlab,
         address _priceCalc,
         address _lab,
         uint256 _weeklyLabSpeed
     ) external onlyOwner {
-        require(initialized == false, "already initialized");
+        require(initialized == false, "RebateDistributor: already initialized");
         require(_core != address(0), "RebateDistributor: invalid core address");
-        require(
-            _locker != address(0),
-            "RebateDistributor: invalid locker address"
-        );
-        require(
-            _priceCalc != address(0),
-            "RebateDistributor: invalid priceCalc address"
-        );
+        require(_xlab != address(0), "RebateDistributor: invalid xlab address");
+        require(_priceCalc != address(0), "RebateDistributor: invalid priceCalc address");
 
         core = ICore(_core);
-        locker = ILocker(_locker);
+        xLAB = IxLAB(_xlab);
         priceCalc = IPriceCalculator(_priceCalc);
-        lab = _lab;
+        LAB = _lab;
 
         adminCheckpoint = block.timestamp;
         adminFeeRate = 0;
@@ -118,7 +99,7 @@ contract RebateDistributor is
             rebateCheckpoints.push(
                 Constant.RebateCheckpoint({
                     timestamp: _truncateTimestamp(block.timestamp),
-                    totalScore: _getTotalScoreAtTruncatedTime(),
+                    totalScore: IBEP20(address(xLAB)).totalSupply(),
                     adminFeeRate: adminFeeRate,
                     weeklyLabSpeed: _weeklyLabSpeed,
                     additionalLabAmount: 0
@@ -140,48 +121,35 @@ contract RebateDistributor is
     }
 
     function setPriceCalculator(address _priceCalculator) external onlyOwner {
-        require(
-            _priceCalculator != address(0),
-            "RebateDistributor: invalid priceCalculator address"
-        );
+        require(_priceCalculator != address(0), "RebateDistributor: invalid priceCalculator address");
         priceCalc = IPriceCalculator(_priceCalculator);
     }
 
-    function setLocker(address _locker) external onlyOwner {
-        require(
-            _locker != address(0),
-            "RebateDistributor: invalid locker address"
-        );
-        locker = ILocker(_locker);
+    function setXLAB(address _xlab) external onlyOwner {
+        require(_xlab != address(0), "RebateDistributor: invalid xLAB address");
+        xLAB = IxLAB(_xlab);
     }
 
+    /// @notice set keeper address
+    /// @param _keeper new keeper address
     function setKeeper(address _keeper) external override onlyKeeper {
-        require(
-            _keeper != address(0),
-            "RebateDistributor: invalid keeper address"
-        );
+        require(_keeper != address(0), "RebateDistributor: invalid keeper address");
         keeper = _keeper;
         emit KeeperUpdated(_keeper);
     }
 
-    function updateAdminFeeRate(
-        uint256 newAdminFeeRate
-    ) external override onlyKeeper {
-        require(
-            newAdminFeeRate <= MAX_ADMIN_FEE_RATE,
-            "RebateDisbtirubor: Invalid fee rate"
-        );
+    function updateAdminFeeRate(uint256 newAdminFeeRate) external override onlyKeeper {
+        require(newAdminFeeRate <= MAX_ADMIN_FEE_RATE, "RebateDisbtirubor: Invalid fee rate");
         adminFeeRate = newAdminFeeRate;
         emit AdminFeeRateUpdated(newAdminFeeRate);
     }
 
-    function updateWeeklyLabSpeed(
-        uint256 newWeeklyLabSpeed
-    ) external onlyKeeper {
+    function updateWeeklyLabSpeed(uint256 newWeeklyLabSpeed) external onlyKeeper {
         weeklyLabSpeed = newWeeklyLabSpeed;
         emit WeeklyLabSpeedUpdated(newWeeklyLabSpeed);
     }
 
+    /// @notice Claim accured admin rebates
     function claimAdminRebates()
         external
         override
@@ -190,44 +158,32 @@ contract RebateDistributor is
         returns (uint256 addtionalLabAmount, uint256[] memory marketFees)
     {
         (addtionalLabAmount, marketFees) = accruedAdminRebate();
-        Constant.RebateCheckpoint memory lastCheckpoint = rebateCheckpoints[
-            rebateCheckpoints.length - 1
-        ];
-        adminCheckpoint = _truncateTimestamp(
-            lastCheckpoint.timestamp.sub(REBATE_CYCLE)
-        );
+        Constant.RebateCheckpoint memory lastCheckpoint = rebateCheckpoints[rebateCheckpoints.length - 1];
+        adminCheckpoint = _truncateTimestamp(lastCheckpoint.timestamp.sub(REBATE_CYCLE));
 
-        address(lab).safeTransfer(msg.sender, addtionalLabAmount);
+        address(LAB).safeTransfer(msg.sender, addtionalLabAmount);
+    }
+
+    function withdrawReward(address receiver, uint amount) external onlyOwner {
+        LAB.safeTransfer(receiver, amount);
     }
 
     /* ========== VIEWS ========== */
 
+    /// @notice Accured rebate amount of account
+    /// @param account account address
     function accruedRebates(
         address account
-    )
-        public
-        view
-        override
-        returns (
-            uint256 labAmount,
-            uint256 additionalLabAmount,
-            uint256[] memory marketFees
-        )
-    {
-        Constant.RebateCheckpoint memory lastCheckpoint = rebateCheckpoints[
-            rebateCheckpoints.length - 1
-        ];
+    ) public view override returns (uint256 labAmount, uint256 additionalLabAmount, uint256[] memory marketFees) {
+        Constant.RebateCheckpoint memory lastCheckpoint = rebateCheckpoints[rebateCheckpoints.length - 1];
         address[] memory markets = core.allMarkets();
         marketFees = new uint256[](markets.length);
 
-        if (locker.lockInfoOf(account).length == 0)
-            return (labAmount, additionalLabAmount, marketFees);
+        if (xLAB.balanceHistoryOf(account).length == 0) return (labAmount, additionalLabAmount, marketFees);
 
         for (
             uint256 nextTimestamp = _truncateTimestamp(
-                userCheckpoint[account] != 0
-                    ? userCheckpoint[account]
-                    : locker.lockInfoOf(account)[0].timestamp
+                userCheckpoint[account] != 0 ? userCheckpoint[account] : xLAB.balanceHistoryOf(account)[0].timestamp
             ).add(REBATE_CYCLE);
             nextTimestamp <= lastCheckpoint.timestamp.sub(REBATE_CYCLE);
             nextTimestamp = nextTimestamp.add(REBATE_CYCLE)
@@ -235,21 +191,12 @@ contract RebateDistributor is
             uint256 votingPower = _getUserVPAt(account, nextTimestamp);
             if (votingPower == 0) continue;
 
-            Constant.RebateCheckpoint
-                storage currentCheckpoint = rebateCheckpoints[
-                    _getCheckpointIdxAt(nextTimestamp)
-                ];
-            labAmount = labAmount.add(
-                currentCheckpoint.weeklyLabSpeed.mul(votingPower).div(1e18)
-            );
+            Constant.RebateCheckpoint storage currentCheckpoint = rebateCheckpoints[_getCheckpointIdxAt(nextTimestamp)];
+            labAmount = labAmount.add(currentCheckpoint.weeklyLabSpeed.mul(votingPower).div(1e18));
             additionalLabAmount = additionalLabAmount.add(
                 currentCheckpoint
                     .additionalLabAmount
-                    .mul(
-                        uint256(1e18).sub(currentCheckpoint.adminFeeRate).mul(
-                            votingPower
-                        )
-                    )
+                    .mul(uint256(1e18).sub(currentCheckpoint.adminFeeRate).mul(votingPower))
                     .div(1e36)
             );
 
@@ -257,11 +204,7 @@ contract RebateDistributor is
                 if (currentCheckpoint.marketFees[markets[i]] > 0) {
                     uint256 marketFee = currentCheckpoint
                         .marketFees[markets[i]]
-                        .mul(
-                            uint256(1e18)
-                                .sub(currentCheckpoint.adminFeeRate)
-                                .mul(votingPower)
-                        )
+                        .mul(uint256(1e18).sub(currentCheckpoint.adminFeeRate).mul(votingPower))
                         .div(1e36);
                     marketFees[i] = marketFees[i].add(marketFee);
                 }
@@ -269,145 +212,119 @@ contract RebateDistributor is
         }
     }
 
-    function accruedAdminRebate()
-        public
-        view
-        returns (uint256 additionalLabAmount, uint256[] memory marketFees)
-    {
-        Constant.RebateCheckpoint memory lastCheckpoint = rebateCheckpoints[
-            rebateCheckpoints.length - 1
-        ];
+    /// @notice Accrued rebate amount of admin
+    function accruedAdminRebate() public view returns (uint256 additionalLabAmount, uint256[] memory marketFees) {
+        Constant.RebateCheckpoint memory lastCheckpoint = rebateCheckpoints[rebateCheckpoints.length - 1];
         address[] memory markets = core.allMarkets();
         marketFees = new uint256[](markets.length);
 
         for (
-            uint256 nextTimestamp = _truncateTimestamp(adminCheckpoint).add(
-                REBATE_CYCLE
-            );
+            uint256 nextTimestamp = _truncateTimestamp(adminCheckpoint).add(REBATE_CYCLE);
             nextTimestamp <= lastCheckpoint.timestamp.sub(REBATE_CYCLE);
             nextTimestamp = nextTimestamp.add(REBATE_CYCLE)
         ) {
             uint256 checkpointIdx = _getCheckpointIdxAt(nextTimestamp);
-            Constant.RebateCheckpoint
-                storage currentCheckpoint = rebateCheckpoints[checkpointIdx];
+            Constant.RebateCheckpoint storage currentCheckpoint = rebateCheckpoints[checkpointIdx];
             additionalLabAmount = additionalLabAmount.add(
-                currentCheckpoint
-                    .additionalLabAmount
-                    .mul(currentCheckpoint.adminFeeRate)
-                    .div(1e18)
+                currentCheckpoint.additionalLabAmount.mul(currentCheckpoint.adminFeeRate).div(1e18)
             );
 
             for (uint256 i = 0; i < markets.length; i++) {
                 if (currentCheckpoint.marketFees[markets[i]] > 0) {
                     marketFees[i] = marketFees[i].add(
-                        currentCheckpoint
-                            .marketFees[markets[i]]
-                            .mul(currentCheckpoint.adminFeeRate)
-                            .div(1e18)
+                        currentCheckpoint.marketFees[markets[i]].mul(currentCheckpoint.adminFeeRate).div(1e18)
                     );
                 }
             }
         }
     }
 
-    function totalAccruedRevenue()
-        public
-        view
-        returns (uint256[] memory marketFees, address[] memory markets)
-    {
-        Constant.RebateCheckpoint memory lastCheckpoint = rebateCheckpoints[
-            rebateCheckpoints.length - 1
-        ];
+    function totalAccruedRevenue() public view returns (uint256[] memory marketFees, address[] memory markets) {
+        Constant.RebateCheckpoint memory lastCheckpoint = rebateCheckpoints[rebateCheckpoints.length - 1];
         markets = core.allMarkets();
         marketFees = new uint256[](markets.length);
 
         for (
-            uint256 nextTimestamp = _truncateTimestamp(
-                rebateCheckpoints[0].timestamp
-            );
+            uint256 nextTimestamp = _truncateTimestamp(rebateCheckpoints[0].timestamp);
             nextTimestamp <= lastCheckpoint.timestamp.sub(REBATE_CYCLE);
             nextTimestamp = nextTimestamp.add(REBATE_CYCLE)
         ) {
             uint256 checkpointIdx = _getCheckpointIdxAt(nextTimestamp);
-            Constant.RebateCheckpoint
-                storage currentCheckpoint = rebateCheckpoints[checkpointIdx];
+            Constant.RebateCheckpoint storage currentCheckpoint = rebateCheckpoints[checkpointIdx];
             for (uint256 i = 0; i < markets.length; i++) {
                 if (currentCheckpoint.marketFees[markets[i]] > 0) {
-                    marketFees[i] = marketFees[i].add(
-                        currentCheckpoint.marketFees[markets[i]]
-                    );
+                    marketFees[i] = marketFees[i].add(currentCheckpoint.marketFees[markets[i]]);
                 }
             }
         }
     }
 
-    function weeklyRebatePool()
-        public
-        view
-        override
-        returns (uint256 labAmount)
-    {
-        Constant.RebateCheckpoint storage lastCheckpoint = rebateCheckpoints[
-            rebateCheckpoints.length - 1
-        ];
+    function weeklyRebatePool() public view override returns (uint256 labAmount) {
+        Constant.RebateCheckpoint storage lastCheckpoint = rebateCheckpoints[rebateCheckpoints.length - 1];
         labAmount = labAmount.add(lastCheckpoint.weeklyLabSpeed).add(
-            lastCheckpoint
-                .additionalLabAmount
-                .mul(uint256(1e18).sub(lastCheckpoint.adminFeeRate))
-                .div(1e18)
+            lastCheckpoint.additionalLabAmount.mul(uint256(1e18).sub(lastCheckpoint.adminFeeRate)).div(1e18)
         );
     }
 
-    function weeklyProfitOfVP(
-        uint256 vp
-    ) public view override returns (uint256 labAmount) {
+    function weeklyProfitOfVP(uint256 vp) public view override returns (uint256 labAmount) {
         require(vp >= 0 && vp <= 1e18, "RebateDistributor: Invalid VP");
         uint256 weeklyLabAmount = weeklyRebatePool();
         labAmount = weeklyLabAmount.mul(vp).div(1e18);
     }
 
-    function weeklyProfitOf(
-        address account
-    ) external view override returns (uint256) {
+    function weeklyProfitOf(address account) external view override returns (uint256) {
         uint256 vp = _getUserVPAt(account, block.timestamp.add(REBATE_CYCLE));
         return weeklyProfitOfVP(vp);
     }
 
-    function indicativeYearProfit() external view override returns (uint256) {
-        (uint256 totalScore, ) = locker.totalScore();
+    function indicativeAPR() external view override returns (uint256) {
+        uint256 totalScore = IBEP20(address(xLAB)).totalSupply();
         if (totalScore == 0) {
             return 0;
         }
 
-        uint256 preScore = locker.preScoreOf(
-            address(0),
-            1e18,
-            uint256(block.timestamp).add(365 days),
-            Constant.EcoScorePreviewOption.LOCK
-        );
+        uint256 preScore = xLAB.calcVeAmount(1e18, 365 days);
         uint256 vp = preScore.mul(1e18).div(totalScore);
         uint256 weeklyProfit = weeklyProfitOfVP(vp >= 1e18 ? 1e18 : vp);
 
         return weeklyProfit.mul(52);
     }
 
+    function indicativeAPROf(uint256 amount, uint256 lockDuration) external view override returns (uint256) {
+        uint256 totalScore = IBEP20(address(xLAB)).totalSupply();
+        if (totalScore == 0) {
+            return 0;
+        }
+
+        uint256 preScore = xLAB.calcVeAmount(amount, lockDuration);
+        uint256 vp = preScore.mul(1e18).div(totalScore.add(preScore));
+        uint256 weeklyProfit = weeklyProfitOfVP(vp >= 1e18 ? 1e18 : vp);
+
+        return weeklyProfit.mul(52).mul(1e18).div(amount);
+    }
+
+    function indicativeAPROfUser(address account) external view override returns (uint256) {
+        uint256 vp = _getUserVP(account);
+        uint256 weeklyProfit = weeklyProfitOfVP(vp >= 1e18 ? 1e18 : vp);
+        uint256 lockedBalance = xLAB.lockedBalanceOf(account);
+
+        if (vp == 0 || lockedBalance == 0) return 0;
+
+        return weeklyProfit.mul(1e18).mul(52).div(lockedBalance);
+    }
+
     /* ========== MUTATIVE FUNCTIONS ========== */
 
+    /// @notice Add checkpoint if needed and supply supluses
     function checkpoint() external override onlyKeeper nonReentrant {
-        Constant.RebateCheckpoint memory lastRebateScore = rebateCheckpoints[
-            rebateCheckpoints.length - 1
-        ];
+        Constant.RebateCheckpoint memory lastRebateScore = rebateCheckpoints[rebateCheckpoints.length - 1];
         address[] memory markets = core.allMarkets();
 
         uint256 nextTimestamp = lastRebateScore.timestamp.add(REBATE_CYCLE);
         while (block.timestamp >= nextTimestamp) {
-            (uint256 totalScore, uint256 slope) = locker.totalScore();
-            uint256 newTotalScore = totalScore == 0
-                ? 0
-                : totalScore.add(slope.mul(block.timestamp.sub(nextTimestamp)));
             rebateCheckpoints.push(
                 Constant.RebateCheckpoint({
-                    totalScore: newTotalScore,
+                    totalScore: IBEP20(address(xLAB)).totalSupply(),
                     timestamp: nextTimestamp,
                     adminFeeRate: adminFeeRate,
                     weeklyLabSpeed: weeklyLabSpeed,
@@ -421,93 +338,54 @@ contract RebateDistributor is
                 address underlying = ILToken(markets[i]).underlying();
 
                 if (underlying == address(ETH)) {
-                    SafeToken.safeTransferETH(
-                        msg.sender,
-                        address(this).balance
-                    );
+                    SafeToken.safeTransferETH(msg.sender, address(this).balance);
                 } else {
-                    underlying.safeTransfer(
-                        msg.sender,
-                        SafeToken.myBalance(underlying)
-                    );
+                    underlying.safeTransfer(msg.sender, SafeToken.myBalance(underlying));
                 }
             }
         }
     }
 
     function addLABToRebatePool(uint256 amount) external override nonReentrant {
-        Constant.RebateCheckpoint storage lastCheckpoint = rebateCheckpoints[
-            rebateCheckpoints.length - 1
-        ];
-        lastCheckpoint.additionalLabAmount = lastCheckpoint
-            .additionalLabAmount
-            .add(amount);
-        address(lab).safeTransferFrom(msg.sender, address(this), amount);
+        Constant.RebateCheckpoint storage lastCheckpoint = rebateCheckpoints[rebateCheckpoints.length - 1];
+        lastCheckpoint.additionalLabAmount = lastCheckpoint.additionalLabAmount.add(amount);
+        address(LAB).safeTransferFrom(msg.sender, address(this), amount);
     }
 
-    function addMarketUTokenToRebatePool(
-        address lToken,
-        uint256 uAmount
-    ) external payable override nonReentrant {
-        Constant.RebateCheckpoint storage lastCheckpoint = rebateCheckpoints[
-            rebateCheckpoints.length - 1
-        ];
+    function addMarketUTokenToRebatePool(address lToken, uint256 uAmount) external payable override nonReentrant {
+        Constant.RebateCheckpoint storage lastCheckpoint = rebateCheckpoints[rebateCheckpoints.length - 1];
         address underlying = ILToken(lToken).underlying();
 
         if (underlying == ETH && msg.value > 0) {
-            lastCheckpoint.marketFees[lToken] = lastCheckpoint
-                .marketFees[lToken]
-                .add(msg.value);
+            lastCheckpoint.marketFees[lToken] = lastCheckpoint.marketFees[lToken].add(msg.value);
         } else if (underlying != ETH) {
-            address(underlying).safeTransferFrom(
-                msg.sender,
-                address(this),
-                uAmount
-            );
-            lastCheckpoint.marketFees[lToken] = lastCheckpoint
-                .marketFees[lToken]
-                .add(uAmount);
+            address(underlying).safeTransferFrom(msg.sender, address(this), uAmount);
+            lastCheckpoint.marketFees[lToken] = lastCheckpoint.marketFees[lToken].add(uAmount);
         }
     }
 
+    /// @notice Claim accured all rebates
     function claimRebates()
         external
         override
         nonReentrant
         whenNotPaused
-        returns (
-            uint256 labAmount,
-            uint256 additionalLabAmount,
-            uint256[] memory marketFees
-        )
+        returns (uint256 labAmount, uint256 additionalLabAmount, uint256[] memory marketFees)
     {
-        (labAmount, additionalLabAmount, marketFees) = accruedRebates(
-            msg.sender
-        );
-        Constant.RebateCheckpoint memory lastCheckpoint = rebateCheckpoints[
-            rebateCheckpoints.length - 1
-        ];
-        userCheckpoint[msg.sender] = _truncateTimestamp(
-            lastCheckpoint.timestamp.sub(REBATE_CYCLE)
-        );
+        (labAmount, additionalLabAmount, marketFees) = accruedRebates(msg.sender);
+        Constant.RebateCheckpoint memory lastCheckpoint = rebateCheckpoints[rebateCheckpoints.length - 1];
+        userCheckpoint[msg.sender] = _truncateTimestamp(lastCheckpoint.timestamp.sub(REBATE_CYCLE));
 
-        address(lab).safeTransfer(
-            msg.sender,
-            labAmount.add(additionalLabAmount)
-        );
+        address(LAB).safeTransfer(msg.sender, labAmount.add(additionalLabAmount));
 
-        emit RebateClaimed(
-            msg.sender,
-            marketFees,
-            labAmount.add(additionalLabAmount)
-        );
+        emit RebateClaimed(msg.sender, marketFees, labAmount.add(additionalLabAmount));
     }
 
     /* ========== PRIVATE FUNCTIONS ========== */
 
-    function _getCheckpointIdxAt(
-        uint256 timestamp
-    ) private view returns (uint256) {
+    /// @notice Find checkpoint index of timestamp
+    /// @param timestamp checkpoint timestamp
+    function _getCheckpointIdxAt(uint256 timestamp) private view returns (uint256) {
         timestamp = _truncateTimestamp(timestamp);
 
         for (uint256 i = rebateCheckpoints.length - 1; i < uint256(-1); i--) {
@@ -519,77 +397,32 @@ contract RebateDistributor is
         revert("RebateDistributor: checkpoint index error");
     }
 
-    function _getTotalScoreAt(
-        uint256 timestamp
-    ) private view returns (uint256) {
-        for (uint256 i = rebateCheckpoints.length - 1; i < uint256(-1); i--) {
-            if (rebateCheckpoints[i].timestamp == timestamp) {
-                return rebateCheckpoints[i].totalScore;
-            }
-        }
+    function _getUserVP(address account) private view returns (uint256) {
+        uint256 userScore = IBEP20(address(xLAB)).balanceOf(account);
+        uint256 totalScore = IBEP20(address(xLAB)).totalSupply();
 
-        if (
-            rebateCheckpoints[rebateCheckpoints.length - 1].timestamp <
-            timestamp
-        ) {
-            (uint256 totalScore, uint256 slope) = locker.totalScore();
-
-            if (totalScore == 0 || slope == 0) {
-                return 0;
-            } else if (block.timestamp > timestamp) {
-                return
-                    totalScore.add(slope.mul(block.timestamp.sub(timestamp)));
-            } else if (block.timestamp < timestamp) {
-                return
-                    totalScore.sub(slope.mul(timestamp.sub(block.timestamp)));
-            } else {
-                return totalScore;
-            }
-        }
-
-        revert("RebateDistributor: checkpoint index error");
+        return totalScore != 0 ? userScore.mul(1e18).div(totalScore) : 0;
     }
 
-    function _getTotalScoreAtTruncatedTime()
-        private
-        view
-        returns (uint256 score)
-    {
-        (uint256 totalScore, uint256 slope) = locker.totalScore();
-        uint256 lastTimestmp = _truncateTimestamp(block.timestamp);
-        score = 0;
-
-        if (totalScore > 0 && slope > 0) {
-            score = totalScore.add(
-                slope.mul(block.timestamp.sub(lastTimestmp))
-            );
-        }
-    }
-
-    function _getUserVPAt(
-        address account,
-        uint256 timestamp
-    ) private view returns (uint256) {
+    /// @notice Get user voting power at timestamp
+    /// @param account account address
+    /// @param timestamp timestamp
+    function _getUserVPAt(address account, uint256 timestamp) private view returns (uint256) {
         timestamp = _truncateTimestamp(timestamp);
-        uint256 userScore = locker.scoreOfAt(account, timestamp);
-        uint256 totalScore = _getTotalScoreAt(timestamp);
+        uint256 userScore = xLAB.balanceOfAt(account, timestamp);
+        uint256 idx = _getCheckpointIdxAt(timestamp);
+        uint256 totalScore = rebateCheckpoints[idx].totalScore;
 
-        return
-            totalScore != 0
-                ? userScore.mul(1e18).div(totalScore).div(1e8).mul(1e8)
-                : 0;
+        return totalScore != 0 ? userScore.mul(1e18).div(totalScore).div(1e8).mul(1e8) : 0;
     }
 
-    function _truncateTimestamp(
-        uint256 timestamp
-    ) private pure returns (uint256) {
+    /// @notice Truncate timestamp to adjust to rebate checkpoint
+    function _truncateTimestamp(uint256 timestamp) private pure returns (uint256) {
         return timestamp.div(REBATE_CYCLE).mul(REBATE_CYCLE);
     }
 
-    function _getDecimals(
-        address gToken
-    ) private view returns (uint256 decimals) {
-        address underlying = ILToken(gToken).underlying();
+    function _getDecimals(address lToken) private view returns (uint256 decimals) {
+        address underlying = ILToken(lToken).underlying();
         if (underlying == address(0)) {
             decimals = 18;
         } else {

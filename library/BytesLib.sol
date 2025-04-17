@@ -9,11 +9,7 @@
 pragma solidity >=0.5.0 <0.8.0;
 
 library BytesLib {
-    function slice(
-        bytes memory _bytes,
-        uint256 _start,
-        uint256 _length
-    ) internal pure returns (bytes memory) {
+    function slice(bytes memory _bytes, uint256 _start, uint256 _length) internal pure returns (bytes memory) {
         require(_length + 31 >= _length, "slice_overflow");
         require(_start + _length >= _start, "slice_overflow");
         require(_bytes.length >= _start + _length, "slice_outOfBounds");
@@ -41,22 +37,13 @@ library BytesLib {
                 // because when slicing multiples of 32 bytes (lengthmod == 0)
                 // the following copy loop was copying the origin's length
                 // and then ending prematurely not copying everything it should.
-                let mc := add(
-                    add(tempBytes, lengthmod),
-                    mul(0x20, iszero(lengthmod))
-                )
+                let mc := add(add(tempBytes, lengthmod), mul(0x20, iszero(lengthmod)))
                 let end := add(mc, _length)
 
                 for {
                     // The multiplication in the next line has the same exact purpose
                     // as the one above.
-                    let cc := add(
-                        add(
-                            add(_bytes, lengthmod),
-                            mul(0x20, iszero(lengthmod))
-                        ),
-                        _start
-                    )
+                    let cc := add(add(add(_bytes, lengthmod), mul(0x20, iszero(lengthmod))), _start)
                 } lt(mc, end) {
                     mc := add(mc, 0x20)
                     cc := add(cc, 0x20)
@@ -84,28 +71,19 @@ library BytesLib {
         return tempBytes;
     }
 
-    function toAddress(
-        bytes memory _bytes,
-        uint256 _start
-    ) internal pure returns (address) {
+    function toAddress(bytes memory _bytes, uint256 _start) internal pure returns (address) {
         require(_start + 20 >= _start, "toAddress_overflow");
         require(_bytes.length >= _start + 20, "toAddress_outOfBounds");
         address tempAddress;
 
         assembly {
-            tempAddress := div(
-                mload(add(add(_bytes, 0x20), _start)),
-                0x1000000000000000000000000
-            )
+            tempAddress := div(mload(add(add(_bytes, 0x20), _start)), 0x1000000000000000000000000)
         }
 
         return tempAddress;
     }
 
-    function toUint24(
-        bytes memory _bytes,
-        uint256 _start
-    ) internal pure returns (uint24) {
+    function toUint24(bytes memory _bytes, uint256 _start) internal pure returns (uint24) {
         require(_start + 3 >= _start, "toUint24_overflow");
         require(_bytes.length >= _start + 3, "toUint24_outOfBounds");
         uint24 tempUint;

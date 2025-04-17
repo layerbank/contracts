@@ -19,6 +19,7 @@ contract Validator is IValidator, Ownable {
 
     IPriceCalculator public oracle;
     uint256 private constant labPriceCollateralCap = 75e15;
+    uint256 private constant DUST = 1000;
 
     /* ========== STATE VARIABLES ========== */
 
@@ -39,28 +40,24 @@ contract Validator is IValidator, Ownable {
         initialized = true;
     }
 
+    /// @notice priceCalculator address 를 설정
+    /// @dev ZERO ADDRESS 로 설정할 수 없음
+    /// @param _priceCalculator priceCalculator contract address
     function setPriceCalculator(address _priceCalculator) public onlyOwner {
-        require(
-            _priceCalculator != address(0),
-            "Validator: invalid priceCalculator address"
-        );
+        require(_priceCalculator != address(0), "Validator: invalid priceCalculator address");
         oracle = IPriceCalculator(_priceCalculator);
     }
 
     /* ========== VIEWS ========== */
 
+    /// @notice View collateral, supply, borrow value in USD of account
+    /// @param account account address
+    /// @return collateralInUSD Total collateral value in USD
+    /// @return supplyInUSD Total supply value in USD
+    /// @return borrowInUSD Total borrow value in USD
     function getAccountLiquidity(
         address account
-    )
-        external
-        view
-        override
-        returns (
-            uint256 collateralInUSD,
-            uint256 supplyInUSD,
-            uint256 borrowInUSD
-        )
-    {
+    ) external view override returns (uint256 collateralInUSD, uint256 supplyInUSD, uint256 borrowInUSD) {
         collateralInUSD = 0;
         supplyInUSD = 0;
         borrowInUSD = 0;
@@ -70,9 +67,7 @@ contract Validator is IValidator, Ownable {
         for (uint256 i = 0; i < assets.length; i++) {
             require(prices[i] != 0, "Validator: price error");
             uint256 decimals = _getDecimals(assets[i]);
-            Constant.AccountSnapshot memory snapshot = ILToken(
-                payable(assets[i])
-            ).accountSnapshot(account);
+            Constant.AccountSnapshot memory snapshot = ILToken(payable(assets[i])).accountSnapshot(account);
 
             uint256 priceCollateral;
             if (assets[i] == LAB && prices[i] > labPriceCollateralCap) {
@@ -81,37 +76,18 @@ contract Validator is IValidator, Ownable {
                 priceCollateral = prices[i];
             }
 
-            uint256 collateralFactor = core
-                .marketInfoOf(payable(assets[i]))
-                .collateralFactor;
-            uint256 collateralValuePerShareInUSD = snapshot
-                .exchangeRate
-                .mul(priceCollateral)
-                .mul(collateralFactor)
-                .div(1e36);
+            uint256 collateralFactor = core.marketInfoOf(payable(assets[i])).collateralFactor;
+            uint256 collateralValuePerShareInUSD = snapshot.exchangeRate.mul(priceCollateral).mul(collateralFactor).div(
+                1e36
+            );
 
             collateralInUSD = collateralInUSD.add(
-                snapshot
-                    .gTokenBalance
-                    .mul(10 ** (18 - decimals))
-                    .mul(collateralValuePerShareInUSD)
-                    .div(1e18)
+                snapshot.lTokenBalance.mul(10 ** (18 - decimals)).mul(collateralValuePerShareInUSD).div(1e18)
             );
             supplyInUSD = supplyInUSD.add(
-                snapshot
-                    .gTokenBalance
-                    .mul(snapshot.exchangeRate)
-                    .mul(10 ** (18 - decimals))
-                    .mul(prices[i])
-                    .div(1e36)
+                snapshot.lTokenBalance.mul(snapshot.exchangeRate).mul(10 ** (18 - decimals)).mul(prices[i]).div(1e36)
             );
-            borrowInUSD = borrowInUSD.add(
-                snapshot
-                    .borrowBalance
-                    .mul(10 ** (18 - decimals))
-                    .mul(prices[i])
-                    .div(1e18)
-            );
+            borrowInUSD = borrowInUSD.add(snapshot.borrowBalance.mul(10 ** (18 - decimals)).mul(prices[i]).div(1e18));
         }
     }
 
@@ -125,122 +101,76 @@ contract Validator is IValidator, Ownable {
 
     /* ========== ALLOWED FUNCTIONS ========== */
 
-    function redeemAllowed(
-        address gToken,
-        address redeemer,
-        uint256 redeemAmount
-    ) external override returns (bool) {
-        (, uint256 shortfall) = _getAccountLiquidityInternal(
-            redeemer,
-            gToken,
-            redeemAmount,
-            0
-        );
+    function redeemAllowed(address lToken, address redeemer, uint256 redeemAmount) external override returns (bool) {
+        (, uint256 shortfall) = _getAccountLiquidityInternal(redeemer, lToken, redeemAmount, 0);
         return shortfall == 0;
     }
 
-    function borrowAllowed(
-        address gToken,
-        address borrower,
-        uint256 borrowAmount
-    ) external override returns (bool) {
-        require(
-            core.checkMembership(borrower, address(gToken)),
-            "Validator: enterMarket required"
-        );
-        require(
-            oracle.getUnderlyingPrice(address(gToken)) > 0,
-            "Validator: Underlying price error"
-        );
+    function borrowAllowed(address lToken, address borrower, uint256 borrowAmount) external override returns (bool) {
+        require(borrowAmount > DUST, "Validator: too small borrow amount");
+        require(core.checkMembership(borrower, address(lToken)), "Validator: enterMarket required");
+        require(oracle.getUnderlyingPrice(address(lToken)) > 0, "Validator: Underlying price error");
 
-        uint256 borrowCap = core.marketInfoOf(gToken).borrowCap;
+        // Borrow cap of 0 corresponds to unlimited borrowing
+        uint256 borrowCap = core.marketInfoOf(lToken).borrowCap;
         if (borrowCap != 0) {
-            uint256 totalBorrows = ILToken(payable(gToken))
-                .accruedTotalBorrow();
+            uint256 totalBorrows = ILToken(payable(lToken)).accruedTotalBorrow();
             uint256 nextTotalBorrows = totalBorrows.add(borrowAmount);
-            require(
-                nextTotalBorrows < borrowCap,
-                "Validator: market borrow cap reached"
-            );
+            require(nextTotalBorrows < borrowCap, "Validator: market borrow cap reached");
         }
 
-        (, uint256 shortfall) = _getAccountLiquidityInternal(
-            borrower,
-            gToken,
-            0,
-            borrowAmount
-        );
+        (, uint256 shortfall) = _getAccountLiquidityInternal(borrower, lToken, 0, borrowAmount);
         return shortfall == 0;
     }
 
     function liquidateAllowed(
-        address gToken,
+        address lToken,
         address borrower,
         uint256 liquidateAmount,
         uint256 closeFactor
     ) external override returns (bool) {
-        (, uint256 shortfall) = _getAccountLiquidityInternal(
-            borrower,
-            address(0),
-            0,
-            0
-        );
+        // The borrower must have shortfall in order to be liquidate
+        (, uint256 shortfall) = _getAccountLiquidityInternal(borrower, address(0), 0, 0);
         require(shortfall != 0, "Validator: Insufficient shortfall");
 
-        uint256 borrowBalance = ILToken(payable(gToken)).accruedBorrowBalanceOf(
-            borrower
-        );
+        // The liquidator may not repay more than what is allowed by the closeFactor
+        uint256 borrowBalance = ILToken(payable(lToken)).accruedBorrowBalanceOf(borrower);
         uint256 maxClose = closeFactor.mul(borrowBalance).div(1e18);
         return liquidateAmount <= maxClose;
     }
 
-    function gTokenAmountToSeize(
-        address gTokenBorrowed,
-        address gTokenCollateral,
+    function lTokenAmountToSeize(
+        address lTokenBorrowed,
+        address lTokenCollateral,
         uint256 amount
-    )
-        external
-        override
-        returns (
-            uint256 seizeGAmount,
-            uint256 rebateGAmount,
-            uint256 liquidatorGAmount
-        )
-    {
+    ) external override returns (uint256 seizeLAmount, uint256 rebateLAmount, uint256 liquidatorLAmount) {
         require(
-            oracle.getUnderlyingPrice(gTokenBorrowed) != 0 &&
-                oracle.getUnderlyingPrice(gTokenCollateral) != 0,
+            oracle.getUnderlyingPrice(lTokenBorrowed) != 0 && oracle.getUnderlyingPrice(lTokenCollateral) != 0,
             "Validator: price error"
         );
 
-        uint256 exchangeRate = ILToken(payable(gTokenCollateral))
-            .accruedExchangeRate();
-        require(
-            exchangeRate != 0,
-            "Validator: exchangeRate of gTokenCollateral is zero"
-        );
+        uint256 exchangeRate = ILToken(payable(lTokenCollateral)).accruedExchangeRate();
+        require(exchangeRate != 0, "Validator: exchangeRate of lTokenCollateral is zero");
 
-        uint256 borrowedDecimals = _getDecimals(gTokenBorrowed);
-        uint256 collateralDecimals = _getDecimals(gTokenCollateral);
+        uint256 borrowedDecimals = _getDecimals(lTokenBorrowed);
+        uint256 collateralDecimals = _getDecimals(lTokenCollateral);
 
-        uint256 seizeGTokenAmountBase = amount
+        uint256 seizeLTokenAmountBase = amount
             .mul(10 ** (18 - borrowedDecimals))
             .mul(core.liquidationIncentive())
-            .mul(oracle.getUnderlyingPrice(gTokenBorrowed))
-            .div(oracle.getUnderlyingPrice(gTokenCollateral).mul(exchangeRate));
+            .mul(oracle.getUnderlyingPrice(lTokenBorrowed))
+            .div(oracle.getUnderlyingPrice(lTokenCollateral).mul(exchangeRate));
 
-        seizeGAmount = seizeGTokenAmountBase.div(
-            10 ** (18 - collateralDecimals)
-        );
-        liquidatorGAmount = seizeGAmount;
-        rebateGAmount = 0;
+        seizeLAmount = seizeLTokenAmountBase.div(10 ** (18 - collateralDecimals));
+        liquidatorLAmount = seizeLAmount;
+        rebateLAmount = 0;
     }
 
     /* ========== PRIVATE FUNCTIONS ========== */
 
     function _getAccountLiquidityInternal(
         address account,
-        address gToken,
+        address lToken,
         uint256 redeemAmount,
         uint256 borrowAmount
     ) private returns (uint256 liquidity, uint256 shortfall) {
@@ -252,9 +182,7 @@ contract Validator is IValidator, Ownable {
         for (uint256 i = 0; i < assets.length; i++) {
             uint256 decimals = _getDecimals(assets[i]);
             require(prices[i] != 0, "Validator: price error");
-            Constant.AccountSnapshot memory snapshot = ILToken(
-                payable(assets[i])
-            ).accruedAccountSnapshot(account);
+            Constant.AccountSnapshot memory snapshot = ILToken(payable(assets[i])).accruedAccountSnapshot(account);
 
             uint256 collateralValuePerShareInUSD;
             if (assets[i] == LAB && prices[i] > labPriceCollateralCap) {
@@ -272,21 +200,13 @@ contract Validator is IValidator, Ownable {
             }
 
             accCollateralValueInUSD = accCollateralValueInUSD.add(
-                snapshot
-                    .gTokenBalance
-                    .mul(10 ** (18 - decimals))
-                    .mul(collateralValuePerShareInUSD)
-                    .div(1e18)
+                snapshot.lTokenBalance.mul(10 ** (18 - decimals)).mul(collateralValuePerShareInUSD).div(1e18)
             );
             accBorrowValueInUSD = accBorrowValueInUSD.add(
-                snapshot
-                    .borrowBalance
-                    .mul(10 ** (18 - decimals))
-                    .mul(prices[i])
-                    .div(1e18)
+                snapshot.borrowBalance.mul(10 ** (18 - decimals)).mul(prices[i]).div(1e18)
             );
 
-            if (assets[i] == gToken) {
+            if (assets[i] == lToken) {
                 accBorrowValueInUSD = accBorrowValueInUSD.add(
                     _getAmountForAdditionalBorrowValue(
                         redeemAmount,
@@ -314,21 +234,18 @@ contract Validator is IValidator, Ownable {
         uint256 price,
         uint256 decimals
     ) internal pure returns (uint256 additionalBorrowValueInUSD) {
-        additionalBorrowValueInUSD = redeemAmount
-            .mul(10 ** (18 - decimals))
-            .mul(collateralValuePerShareInUSD)
-            .div(1e18);
+        additionalBorrowValueInUSD = redeemAmount.mul(10 ** (18 - decimals)).mul(collateralValuePerShareInUSD).div(
+            1e18
+        );
         additionalBorrowValueInUSD = additionalBorrowValueInUSD.add(
             borrowAmount.mul(10 ** (18 - decimals)).mul(price).div(1e18)
         );
     }
 
-    function _getDecimals(
-        address gToken
-    ) internal view returns (uint256 decimals) {
-        address underlying = ILToken(gToken).underlying();
+    function _getDecimals(address lToken) internal view returns (uint256 decimals) {
+        address underlying = ILToken(lToken).underlying();
         if (underlying == address(0)) {
-            decimals = 18;
+            decimals = 18; // ETH
         } else {
             decimals = IBEP20(underlying).decimals();
         }

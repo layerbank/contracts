@@ -19,9 +19,10 @@ contract Core is CoreAdmin {
 
     /* ========== STATE VARIABLES ========== */
 
-    mapping(address => address[]) public marketListOfUsers;
-    mapping(address => mapping(address => bool)) public usersOfMarket;
+    mapping(address => address[]) public marketListOfUsers; // (account => lTokenAddress[])
+    mapping(address => mapping(address => bool)) public usersOfMarket; // (lTokenAddress => (account => joined))
 
+    // initializer
     bool public initialized;
 
     /* ========== INITIALIZER ========== */
@@ -39,8 +40,8 @@ contract Core is CoreAdmin {
 
     /* ========== MODIFIERS ========== */
 
-    modifier onlyMemberOfMarket(address gToken) {
-        require(usersOfMarket[gToken][msg.sender], "Core: must enter market");
+    modifier onlyMemberOfMarket(address lToken) {
+        require(usersOfMarket[lToken][msg.sender], "Core: must enter market");
         _;
     }
 
@@ -56,318 +57,172 @@ contract Core is CoreAdmin {
         _;
     }
 
+    modifier onlyLeverager() {
+        require(msg.sender == leverager, "Core: caller should be leverager");
+        _;
+    }
+
     /* ========== VIEWS ========== */
 
     function allMarkets() external view override returns (address[] memory) {
         return markets;
     }
 
-    function marketInfoOf(
-        address gToken
-    ) external view override returns (Constant.MarketInfo memory) {
-        return marketInfos[gToken];
+    function marketInfoOf(address lToken) external view override returns (Constant.MarketInfo memory) {
+        return marketInfos[lToken];
     }
 
-    function marketListOf(
-        address account
-    ) external view override returns (address[] memory) {
+    function marketListOf(address account) external view override returns (address[] memory) {
         return marketListOfUsers[account];
     }
 
-    function checkMembership(
-        address account,
-        address gToken
-    ) external view override returns (bool) {
-        return usersOfMarket[gToken][account];
+    function checkMembership(address account, address lToken) external view override returns (bool) {
+        return usersOfMarket[lToken][account];
     }
 
     function accountLiquidityOf(
         address account
-    )
-        external
-        view
-        override
-        returns (
-            uint256 collateralInUSD,
-            uint256 supplyInUSD,
-            uint256 borrowInUSD
-        )
-    {
+    ) external view override returns (uint256 collateralInUSD, uint256 supplyInUSD, uint256 borrowInUSD) {
         return IValidator(validator).getAccountLiquidity(account);
     }
 
     /* ========== MUTATIVE FUNCTIONS ========== */
 
-    function enterMarkets(address[] memory gTokens) public override {
-        for (uint256 i = 0; i < gTokens.length; i++) {
-            _enterMarket(payable(gTokens[i]), msg.sender);
+    function enterMarkets(address[] memory lTokens) public override {
+        for (uint256 i = 0; i < lTokens.length; i++) {
+            _enterMarket(payable(lTokens[i]), msg.sender);
         }
     }
 
-    function exitMarket(
-        address gToken
-    ) external override onlyListedMarket(gToken) onlyMemberOfMarket(gToken) {
-        Constant.AccountSnapshot memory snapshot = ILToken(gToken)
-            .accruedAccountSnapshot(msg.sender);
-        require(
-            snapshot.borrowBalance == 0,
-            "Core: borrow balance must be zero"
-        );
-        require(
-            IValidator(validator).redeemAllowed(
-                gToken,
-                msg.sender,
-                snapshot.gTokenBalance
-            ),
-            "Core: cannot redeem"
-        );
+    function exitMarket(address lToken) external override onlyListedMarket(lToken) onlyMemberOfMarket(lToken) {
+        Constant.AccountSnapshot memory snapshot = ILToken(lToken).accruedAccountSnapshot(msg.sender);
+        require(snapshot.borrowBalance == 0, "Core: borrow balance must be zero");
+        require(IValidator(validator).redeemAllowed(lToken, msg.sender, snapshot.lTokenBalance), "Core: cannot redeem");
 
-        _removeUserMarket(gToken, msg.sender);
-        emit MarketExited(gToken, msg.sender);
+        _removeUserMarket(lToken, msg.sender);
+        emit MarketExited(lToken, msg.sender);
     }
 
     function supply(
-        address gToken,
+        address lToken,
         uint256 uAmount
-    )
-        external
-        payable
-        override
-        onlyListedMarket(gToken)
-        nonReentrant
-        whenNotPaused
-        returns (uint256)
-    {
-        uAmount = ILToken(gToken).underlying() == address(ETH)
-            ? msg.value
-            : uAmount;
-        uint256 supplyCap = marketInfos[gToken].supplyCap;
+    ) external payable override onlyListedMarket(lToken) nonReentrant whenNotPaused returns (uint256) {
+        uAmount = ILToken(lToken).underlying() == address(ETH) ? msg.value : uAmount;
+        uint256 supplyCap = marketInfos[lToken].supplyCap;
         require(
             supplyCap == 0 ||
-                ILToken(gToken)
-                    .totalSupply()
-                    .mul(ILToken(gToken).exchangeRate())
-                    .div(1e18)
-                    .add(uAmount) <=
-                supplyCap,
+                ILToken(lToken).totalSupply().mul(ILToken(lToken).exchangeRate()).div(1e18).add(uAmount) <= supplyCap,
             "Core: supply cap reached"
         );
 
-        uint256 gAmount = ILToken(gToken).supply{value: msg.value}(
-            msg.sender,
-            uAmount
-        );
-        labDistributor.notifySupplyUpdated(gToken, msg.sender);
+        uint256 lAmount = ILToken(lToken).supply{value: msg.value}(msg.sender, uAmount);
+        labDistributor.notifySupplyUpdated(lToken, msg.sender);
 
-        emit MarketSupply(msg.sender, gToken, uAmount);
-        return gAmount;
+        emit MarketSupply(msg.sender, lToken, uAmount);
+        return lAmount;
+    }
+
+    function supplyBehalf(
+        address supplier,
+        address lToken,
+        uint256 uAmount
+    ) external payable override onlyListedMarket(lToken) nonReentrant whenNotPaused returns (uint256) {
+        uAmount = ILToken(lToken).underlying() == address(ETH) ? msg.value : uAmount;
+        uint256 supplyCap = marketInfos[lToken].supplyCap;
+        require(
+            supplyCap == 0 ||
+                ILToken(lToken).totalSupply().mul(ILToken(lToken).exchangeRate()).div(1e18).add(uAmount) <= supplyCap,
+            "Core: supply cap reached"
+        );
+
+        uint256 lAmount = ILToken(lToken).supplyBehalf{value: msg.value}(msg.sender, supplier, uAmount);
+        labDistributor.notifySupplyUpdated(lToken, supplier);
+
+        emit MarketSupply(supplier, lToken, uAmount);
+        return lAmount;
     }
 
     function redeemToken(
-        address gToken,
-        uint256 gAmount
-    )
-        external
-        override
-        onlyListedMarket(gToken)
-        nonReentrant
-        whenNotPaused
-        returns (uint256)
-    {
-        uint256 uAmountRedeem = ILToken(gToken).redeemToken(
-            msg.sender,
-            gAmount
-        );
-        labDistributor.notifySupplyUpdated(gToken, msg.sender);
+        address lToken,
+        uint256 lAmount
+    ) external override onlyListedMarket(lToken) nonReentrant whenNotPaused returns (uint256) {
+        uint256 uAmountRedeem = ILToken(lToken).redeemToken(msg.sender, lAmount);
+        labDistributor.notifySupplyUpdated(lToken, msg.sender);
 
-        emit MarketRedeem(msg.sender, gToken, uAmountRedeem);
+        emit MarketRedeem(msg.sender, lToken, uAmountRedeem);
         return uAmountRedeem;
     }
 
     function redeemUnderlying(
-        address gToken,
+        address lToken,
         uint256 uAmount
-    )
-        external
-        override
-        onlyListedMarket(gToken)
-        nonReentrant
-        whenNotPaused
-        returns (uint256)
-    {
-        uint256 uAmountRedeem = ILToken(gToken).redeemUnderlying(
-            msg.sender,
-            uAmount
-        );
-        labDistributor.notifySupplyUpdated(gToken, msg.sender);
+    ) external override onlyListedMarket(lToken) nonReentrant whenNotPaused returns (uint256) {
+        uint256 uAmountRedeem = ILToken(lToken).redeemUnderlying(msg.sender, uAmount);
+        labDistributor.notifySupplyUpdated(lToken, msg.sender);
 
-        emit MarketRedeem(msg.sender, gToken, uAmountRedeem);
+        emit MarketRedeem(msg.sender, lToken, uAmountRedeem);
         return uAmountRedeem;
     }
 
     function borrow(
-        address gToken,
+        address lToken,
         uint256 amount
-    ) external override onlyListedMarket(gToken) nonReentrant whenNotPaused {
-        _enterMarket(gToken, msg.sender);
-        require(
-            IValidator(validator).borrowAllowed(gToken, msg.sender, amount),
-            "Core: cannot borrow"
-        );
+    ) external override onlyListedMarket(lToken) nonReentrant whenNotPaused {
+        _enterMarket(lToken, msg.sender);
+        require(IValidator(validator).borrowAllowed(lToken, msg.sender, amount), "Core: cannot borrow");
 
-        ILToken(payable(gToken)).borrow(msg.sender, amount);
-        labDistributor.notifyBorrowUpdated(gToken, msg.sender);
+        ILToken(payable(lToken)).borrow(msg.sender, amount);
+        labDistributor.notifyBorrowUpdated(lToken, msg.sender);
     }
 
-    function nftBorrow(
-        address gToken,
-        address user,
+    function borrowBehalf(
+        address borrower,
+        address lToken,
         uint256 amount
-    )
-        external
-        override
-        onlyListedMarket(gToken)
-        onlyNftCore
-        nonReentrant
-        whenNotPaused
-    {
-        require(
-            ILToken(gToken).underlying() == address(ETH),
-            "Core: invalid underlying asset"
-        );
-        _enterMarket(gToken, msg.sender);
-        ILToken(payable(gToken)).borrow(msg.sender, amount);
-        labDistributor.notifyBorrowUpdated(gToken, user);
+    ) external override onlyListedMarket(lToken) onlyLeverager nonReentrant whenNotPaused {
+        _enterMarket(lToken, borrower);
+        require(IValidator(validator).borrowAllowed(lToken, borrower, amount), "Core: cannot borrow");
+
+        ILToken(payable(lToken)).borrowBehalf(msg.sender, borrower, amount);
+        labDistributor.notifyBorrowUpdated(lToken, borrower);
     }
 
     function repayBorrow(
-        address gToken,
+        address lToken,
         uint256 amount
-    )
-        external
-        payable
-        override
-        onlyListedMarket(gToken)
-        nonReentrant
-        whenNotPaused
-    {
-        ILToken(payable(gToken)).repayBorrow{value: msg.value}(
-            msg.sender,
-            amount
-        );
-        labDistributor.notifyBorrowUpdated(gToken, msg.sender);
-    }
-
-    function nftRepayBorrow(
-        address gToken,
-        address user,
-        uint256 amount
-    )
-        external
-        payable
-        override
-        onlyListedMarket(gToken)
-        onlyNftCore
-        nonReentrant
-        whenNotPaused
-    {
-        require(
-            ILToken(gToken).underlying() == address(ETH),
-            "Core: invalid underlying asset"
-        );
-        ILToken(payable(gToken)).repayBorrow{value: msg.value}(
-            msg.sender,
-            amount
-        );
-        labDistributor.notifyBorrowUpdated(gToken, user);
-    }
-
-    function repayBorrowBehalf(
-        address gToken,
-        address borrower,
-        uint256 amount
-    )
-        external
-        payable
-        override
-        onlyListedMarket(gToken)
-        nonReentrant
-        whenNotPaused
-    {
-        ILToken(payable(gToken)).repayBorrowBehalf{value: msg.value}(
-            msg.sender,
-            borrower,
-            amount
-        );
-        labDistributor.notifyBorrowUpdated(gToken, borrower);
+    ) external payable override onlyListedMarket(lToken) nonReentrant whenNotPaused {
+        ILToken(payable(lToken)).repayBorrow{value: msg.value}(msg.sender, amount);
+        labDistributor.notifyBorrowUpdated(lToken, msg.sender);
     }
 
     function liquidateBorrow(
-        address gTokenBorrowed,
-        address gTokenCollateral,
+        address lTokenBorrowed,
+        address lTokenCollateral,
         address borrower,
         uint256 amount
     ) external payable override nonReentrant whenNotPaused {
-        amount = ILToken(gTokenBorrowed).underlying() == address(ETH)
-            ? msg.value
-            : amount;
+        amount = ILToken(lTokenBorrowed).underlying() == address(ETH) ? msg.value : amount;
+        require(marketInfos[lTokenBorrowed].isListed && marketInfos[lTokenCollateral].isListed, "Core: invalid market");
+        require(usersOfMarket[lTokenCollateral][borrower], "Core: not a collateral");
+        require(marketInfos[lTokenCollateral].collateralFactor > 0, "Core: not a collateral");
         require(
-            marketInfos[gTokenBorrowed].isListed &&
-                marketInfos[gTokenCollateral].isListed,
-            "Core: invalid market"
-        );
-        require(
-            usersOfMarket[gTokenCollateral][borrower],
-            "Core: not a collateral"
-        );
-        require(
-            marketInfos[gTokenCollateral].collateralFactor > 0,
-            "Core: not a collateral"
-        );
-        require(
-            IValidator(validator).liquidateAllowed(
-                gTokenBorrowed,
-                borrower,
-                amount,
-                closeFactor
-            ),
+            IValidator(validator).liquidateAllowed(lTokenBorrowed, borrower, amount, closeFactor),
             "Core: cannot liquidate borrow"
         );
 
-        (, uint256 rebateGAmount, uint256 liquidatorGAmount) = ILToken(
-            gTokenBorrowed
-        ).liquidateBorrow{value: msg.value}(
-            gTokenCollateral,
-            msg.sender,
-            borrower,
-            amount
-        );
+        (, uint256 rebateLAmount, uint256 liquidatorLAmount) = ILToken(lTokenBorrowed).liquidateBorrow{
+            value: msg.value
+        }(lTokenCollateral, msg.sender, borrower, amount);
 
-        ILToken(gTokenCollateral).seize(
-            msg.sender,
-            borrower,
-            liquidatorGAmount
-        );
-        labDistributor.notifyTransferred(
-            gTokenCollateral,
-            borrower,
-            msg.sender
-        );
+        ILToken(lTokenCollateral).seize(msg.sender, borrower, liquidatorLAmount);
+        labDistributor.notifyTransferred(lTokenCollateral, borrower, msg.sender);
 
-        if (rebateGAmount > 0) {
-            ILToken(gTokenCollateral).seize(
-                rebateDistributor,
-                borrower,
-                rebateGAmount
-            );
-            labDistributor.notifyTransferred(
-                gTokenCollateral,
-                borrower,
-                rebateDistributor
-            );
+        if (rebateLAmount > 0) {
+            ILToken(lTokenCollateral).seize(rebateDistributor, borrower, rebateLAmount);
+            labDistributor.notifyTransferred(lTokenCollateral, borrower, rebateDistributor);
         }
 
-        labDistributor.notifyBorrowUpdated(gTokenBorrowed, borrower);
+        labDistributor.notifyBorrowUpdated(lTokenBorrowed, borrower);
     }
 
     function claimLab() external override nonReentrant {
@@ -380,8 +235,9 @@ contract Core is CoreAdmin {
         labDistributor.claim(_markets, msg.sender);
     }
 
-    function compoundLab() external override {
-        labDistributor.compound(markets, msg.sender);
+    /// @notice 쌓인 보상을 Locker에 바로 deposit
+    function compoundLab(uint256 lockDuration) external override nonReentrant {
+        labDistributor.compound(markets, msg.sender, lockDuration);
     }
 
     function transferTokens(
@@ -396,30 +252,22 @@ contract Core is CoreAdmin {
 
     /* ========== PRIVATE FUNCTIONS ========== */
 
-    function _enterMarket(
-        address gToken,
-        address _account
-    ) internal onlyListedMarket(gToken) {
-        if (!usersOfMarket[gToken][_account]) {
-            usersOfMarket[gToken][_account] = true;
-            marketListOfUsers[_account].push(gToken);
-            emit MarketEntered(gToken, _account);
+    function _enterMarket(address lToken, address _account) internal onlyListedMarket(lToken) {
+        if (!usersOfMarket[lToken][_account]) {
+            usersOfMarket[lToken][_account] = true;
+            marketListOfUsers[_account].push(lToken);
+            emit MarketEntered(lToken, _account);
         }
     }
 
-    function _removeUserMarket(address gTokenToExit, address _account) private {
-        require(
-            marketListOfUsers[_account].length > 0,
-            "Core: cannot pop user market"
-        );
-        delete usersOfMarket[gTokenToExit][_account];
+    function _removeUserMarket(address lTokenToExit, address _account) private {
+        require(marketListOfUsers[_account].length > 0, "Core: cannot pop user market");
+        delete usersOfMarket[lTokenToExit][_account];
 
         uint256 length = marketListOfUsers[_account].length;
         for (uint256 i = 0; i < length; i++) {
-            if (marketListOfUsers[_account][i] == gTokenToExit) {
-                marketListOfUsers[_account][i] = marketListOfUsers[_account][
-                    length - 1
-                ];
+            if (marketListOfUsers[_account][i] == lTokenToExit) {
+                marketListOfUsers[_account][i] = marketListOfUsers[_account][length - 1];
                 marketListOfUsers[_account].pop();
                 break;
             }

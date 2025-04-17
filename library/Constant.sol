@@ -35,26 +35,8 @@ library Constant {
         uint256 interestIndex;
     }
 
-    struct LoanData {
-        uint256 loanId;
-        LoanState state;
-        address borrower;
-        address gNft;
-        address nftAsset;
-        uint256 nftTokenId;
-        uint256 borrowAmount;
-        uint256 interestIndex;
-        uint256 bidStartTimestamp;
-        address bidderAddress;
-        uint256 bidPrice;
-        uint256 bidBorrowAmount;
-        uint256 floorPrice;
-        uint256 bidCount;
-        address firstBidderAddress;
-    }
-
     struct AccountSnapshot {
-        uint256 gTokenBalance;
+        uint256 lTokenBalance;
         uint256 borrowBalance;
         uint256 exchangeRate;
     }
@@ -81,11 +63,11 @@ library Constant {
     }
 
     struct DistributionAccountInfo {
-        uint256 accuredLAB;
-        uint256 boostedSupply;
-        uint256 boostedBorrow;
-        uint256 accPerShareSupply;
-        uint256 accPerShareBorrow;
+        uint256 accuredLAB; // Unclaimed LAB rewards amount
+        uint256 boostedSupply; // effective(boosted) supply balance of user  (since last_action)
+        uint256 boostedBorrow; // effective(boosted) borrow balance of user  (since last_action)
+        uint256 accPerShareSupply; // Last integral value of LAB rewards per share. ∫(LABRate(t) / totalShare(t) dt) from 0 till (last_action)
+        uint256 accPerShareBorrow; // Last integral value of LAB rewards per share. ∫(LABRate(t) / totalShare(t) dt) from 0 till (last_action)
     }
 
     struct DistributionAPY {

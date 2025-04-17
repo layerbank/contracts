@@ -6,23 +6,23 @@ import "../library/Constant.sol";
 
 interface ICore {
     /* ========== Event ========== */
-    event MarketSupply(address user, address gToken, uint256 uAmount);
-    event MarketRedeem(address user, address gToken, uint256 uAmount);
+    event MarketSupply(address user, address lToken, uint256 uAmount);
+    event MarketRedeem(address user, address lToken, uint256 uAmount);
 
-    event MarketListed(address gToken);
-    event MarketEntered(address gToken, address account);
-    event MarketExited(address gToken, address account);
+    event MarketListed(address lToken);
+    event MarketEntered(address lToken, address account);
+    event MarketExited(address lToken, address account);
 
     event CloseFactorUpdated(uint256 newCloseFactor);
-    event CollateralFactorUpdated(address gToken, uint256 newCollateralFactor);
+    event CollateralFactorUpdated(address lToken, uint256 newCollateralFactor);
     event LiquidationIncentiveUpdated(uint256 newLiquidationIncentive);
-    event SupplyCapUpdated(address indexed gToken, uint256 newSupplyCap);
-    event BorrowCapUpdated(address indexed gToken, uint256 newBorrowCap);
+    event SupplyCapUpdated(address indexed lToken, uint256 newSupplyCap);
+    event BorrowCapUpdated(address indexed lToken, uint256 newBorrowCap);
     event KeeperUpdated(address newKeeper);
-    event NftCoreUpdated(address newNftCore);
     event ValidatorUpdated(address newValidator);
     event LABDistributorUpdated(address newLABDistributor);
     event RebateDistributorUpdated(address newRebateDistributor);
+    event LeveragerUpdated(address newLeverager);
     event FlashLoan(
         address indexed target,
         address indexed initiator,
@@ -31,82 +31,47 @@ interface ICore {
         uint256 premium
     );
 
-    function nftCore() external view returns (address);
-
     function validator() external view returns (address);
 
     function rebateDistributor() external view returns (address);
 
     function allMarkets() external view returns (address[] memory);
 
-    function marketListOf(
-        address account
-    ) external view returns (address[] memory);
+    function marketListOf(address account) external view returns (address[] memory);
 
-    function marketInfoOf(
-        address gToken
-    ) external view returns (Constant.MarketInfo memory);
+    function marketInfoOf(address lToken) external view returns (Constant.MarketInfo memory);
 
-    function checkMembership(
-        address account,
-        address gToken
-    ) external view returns (bool);
+    function checkMembership(address account, address lToken) external view returns (bool);
 
     function accountLiquidityOf(
         address account
-    )
-        external
-        view
-        returns (
-            uint256 collateralInUSD,
-            uint256 supplyInUSD,
-            uint256 borrowInUSD
-        );
+    ) external view returns (uint256 collateralInUSD, uint256 supplyInUSD, uint256 borrowInUSD);
 
     function closeFactor() external view returns (uint256);
 
     function liquidationIncentive() external view returns (uint256);
 
-    function enterMarkets(address[] memory gTokens) external;
+    function enterMarkets(address[] memory lTokens) external;
 
-    function exitMarket(address gToken) external;
+    function exitMarket(address lToken) external;
 
-    function supply(
-        address gToken,
-        uint256 underlyingAmount
-    ) external payable returns (uint256);
+    function supply(address lToken, uint256 underlyingAmount) external payable returns (uint256);
 
-    function redeemToken(
-        address gToken,
-        uint256 gTokenAmount
-    ) external returns (uint256 redeemed);
+    function supplyBehalf(address account, address lToken, uint256 underlyingAmount) external payable returns (uint256);
 
-    function redeemUnderlying(
-        address gToken,
-        uint256 underlyingAmount
-    ) external returns (uint256 redeemed);
+    function redeemToken(address lToken, uint256 lTokenAmount) external returns (uint256 redeemed);
 
-    function borrow(address gToken, uint256 amount) external;
+    function redeemUnderlying(address lToken, uint256 underlyingAmount) external returns (uint256 redeemed);
 
-    function nftBorrow(address gToken, address user, uint256 amount) external;
+    function borrow(address lToken, uint256 amount) external;
 
-    function repayBorrow(address gToken, uint256 amount) external payable;
+    function borrowBehalf(address borrower, address lToken, uint256 amount) external;
 
-    function nftRepayBorrow(
-        address gToken,
-        address user,
-        uint256 amount
-    ) external payable;
-
-    function repayBorrowBehalf(
-        address gToken,
-        address borrower,
-        uint256 amount
-    ) external payable;
+    function repayBorrow(address lToken, uint256 amount) external payable;
 
     function liquidateBorrow(
-        address gTokenBorrowed,
-        address gTokenCollateral,
+        address lTokenBorrowed,
+        address lTokenCollateral,
         address borrower,
         uint256 amount
     ) external payable;
@@ -115,12 +80,7 @@ interface ICore {
 
     function claimLab(address market) external;
 
-    function transferTokens(
-        address spender,
-        address src,
-        address dst,
-        uint256 amount
-    ) external;
+    function transferTokens(address spender, address src, address dst, uint256 amount) external;
 
-    function compoundLab() external;
+    function compoundLab(uint256 lockDuration) external;
 }
