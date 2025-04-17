@@ -9,15 +9,11 @@ interface IPriceCalculator {
 
     function priceOf(address asset) external view returns (uint256);
 
-    function pricesOf(
-        address[] memory assets
-    ) external view returns (uint256[] memory);
+    function pricesOf(address[] memory assets) external view returns (uint256[] memory);
 
     function priceOfETH() external view returns (uint256);
 
-    function getUnderlyingPrice(address gToken) external view returns (uint256);
+    function getUnderlyingPrice(address lToken) external view returns (uint256);
 
-    function getUnderlyingPrices(
-        address[] memory gTokens
-    ) external view returns (uint256[] memory);
+    function getUnderlyingPrices(address[] memory lTokens) external view returns (uint256[] memory);
 }

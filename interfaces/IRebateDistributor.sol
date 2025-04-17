@@ -18,22 +18,19 @@ interface IRebateDistributor {
 
     function weeklyProfitOf(address account) external view returns (uint256);
 
-    function indicativeYearProfit() external view returns (uint256);
+    function indicativeAPR() external view returns (uint256);
 
-    function accruedRebates(
-        address account
-    ) external view returns (uint256, uint256, uint256[] memory);
+    function indicativeAPROf(uint256 amount, uint256 lockDuration) external view returns (uint256);
 
-    function claimRebates()
-        external
-        returns (uint256, uint256, uint256[] memory);
+    function indicativeAPROfUser(address account) external view returns (uint256);
+
+    function accruedRebates(address account) external view returns (uint256, uint256, uint256[] memory);
+
+    function claimRebates() external returns (uint256, uint256, uint256[] memory);
 
     function claimAdminRebates() external returns (uint256, uint256[] memory);
 
     function addLABToRebatePool(uint256 amount) external;
 
-    function addMarketUTokenToRebatePool(
-        address lToken,
-        uint256 uAmount
-    ) external payable;
+    function addMarketUTokenToRebatePool(address lToken, uint256 uAmount) external payable;
 }

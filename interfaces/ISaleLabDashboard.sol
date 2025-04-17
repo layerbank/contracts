@@ -14,8 +14,8 @@ interface ISaleLabDashboard {
     }
 
     struct OverflowFarmInfo {
-        uint256 raisingAmount;
-        uint256 totalAmount;
+        uint256 raisingAmount; // target raising amount
+        uint256 totalAmount; // total raised amount
         uint256 labPriceInETH;
         uint256 startTime;
         uint256 endTime;
@@ -23,12 +23,6 @@ interface ISaleLabDashboard {
         uint256 harvestTime;
     }
 
-    function getOverflowFarmUserInfo(
-        address user
-    ) external view returns (OverflowFarmUserInfo memory);
-
-    function getOverflowFarmInfo()
-        external
-        view
-        returns (OverflowFarmInfo memory);
+    function getOverflowFarmUserInfo(address user) external view returns (OverflowFarmUserInfo memory);
+    function getOverflowFarmInfo() external view returns (OverflowFarmInfo memory);
 }

@@ -12,10 +12,7 @@ contract Whitelist is Ownable {
     event DisableWhitelist();
 
     modifier onlyWhitelisted() {
-        require(
-            _disable || _whitelist[msg.sender],
-            "Whitelist: caller is not on the whitelist"
-        );
+        require(_disable || _whitelist[msg.sender], "Whitelist: caller is not on the whitelist");
         _;
     }
 

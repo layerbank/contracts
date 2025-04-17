@@ -15,6 +15,7 @@ contract PriceCalculator is IPriceCalculator, Ownable {
     using SafeMath for uint256;
     using HomoraMath for uint256;
 
+    // Min price setting interval
     address internal constant ETH = 0x0000000000000000000000000000000000000000;
     uint256 private constant THRESHOLD = 5 minutes;
 
@@ -24,24 +25,11 @@ contract PriceCalculator is IPriceCalculator, Ownable {
     mapping(address => ReferenceData) public references;
     mapping(address => address) private tokenFeeds;
 
-    /* ========== Event ========== */
-
-    event MarketListed(address gToken);
-    event MarketEntered(address gToken, address account);
-    event MarketExited(address gToken, address account);
-
-    event CloseFactorUpdated(uint256 newCloseFactor);
-    event CollateralFactorUpdated(address gToken, uint256 newCollateralFactor);
-    event LiquidationIncentiveUpdated(uint256 newLiquidationIncentive);
-    event BorrowCapUpdated(address indexed gToken, uint256 newBorrowCap);
-
     /* ========== MODIFIERS ========== */
 
+    /// @dev `msg.sender` 가 keeper 또는 owner 인지 검증
     modifier onlyKeeper() {
-        require(
-            msg.sender == keeper || msg.sender == owner(),
-            "PriceCalculator: caller is not the owner or keeper"
-        );
+        require(msg.sender == keeper || msg.sender == owner(), "PriceCalculator: caller is not the owner or keeper");
         _;
     }
 
@@ -51,42 +39,40 @@ contract PriceCalculator is IPriceCalculator, Ownable {
 
     /* ========== RESTRICTED FUNCTIONS ========== */
 
+    /// @notice Keeper address 변경
+    /// @dev Keeper address 에서만 요청 가능
+    /// @param _keeper New keeper address
     function setKeeper(address _keeper) external onlyKeeper {
-        require(
-            _keeper != address(0),
-            "PriceCalculator: invalid keeper address"
-        );
+        require(_keeper != address(0), "PriceCalculator: invalid keeper address");
         keeper = _keeper;
     }
 
+    /// @notice Chainlink oracle feed 설정
+    /// @param asset Asset address to be used as a key
+    /// @param feed Chainlink oracle feed contract address
     function setTokenFeed(address asset, address feed) external onlyKeeper {
         tokenFeeds[asset] = feed;
     }
 
-    function setPrices(
-        address[] memory assets,
-        uint256[] memory prices,
-        uint256 timestamp
-    ) external onlyKeeper {
+    /// @notice Set price by keeper
+    /// @dev Keeper address 에서만 요청 가능
+    /// @param assets Array of asset addresses to set
+    /// @param prices Array of asset prices to set
+    /// @param timestamp Timstamp of price information
+    function setPrices(address[] memory assets, uint256[] memory prices, uint256 timestamp) external onlyKeeper {
         require(
-            timestamp <= block.timestamp &&
-                block.timestamp.sub(timestamp) <= THRESHOLD,
+            timestamp <= block.timestamp && block.timestamp.sub(timestamp) <= THRESHOLD,
             "PriceCalculator: invalid timestamp"
         );
 
         for (uint256 i = 0; i < assets.length; i++) {
-            references[assets[i]] = ReferenceData({
-                lastData: prices[i],
-                lastUpdated: block.timestamp
-            });
+            references[assets[i]] = ReferenceData({lastData: prices[i], lastUpdated: block.timestamp});
         }
     }
 
     /* ========== VIEWS ========== */
 
-    function priceOf(
-        address asset
-    ) public view override returns (uint256 priceInUSD) {
+    function priceOf(address asset) public view override returns (uint256 priceInUSD) {
         if (asset == address(0)) {
             return priceOfETH();
         }
@@ -95,9 +81,7 @@ contract PriceCalculator is IPriceCalculator, Ownable {
         return _oracleValueInUSDOf(asset, unitAmount, decimals);
     }
 
-    function pricesOf(
-        address[] memory assets
-    ) public view override returns (uint256[] memory) {
+    function pricesOf(address[] memory assets) public view override returns (uint256[] memory) {
         uint256[] memory prices = new uint256[](assets.length);
         for (uint256 i = 0; i < assets.length; i++) {
             prices[i] = priceOf(assets[i]);
@@ -105,18 +89,14 @@ contract PriceCalculator is IPriceCalculator, Ownable {
         return prices;
     }
 
-    function getUnderlyingPrice(
-        address gToken
-    ) public view override returns (uint256) {
-        return priceOf(ILToken(gToken).underlying());
+    function getUnderlyingPrice(address lToken) public view override returns (uint256) {
+        return priceOf(ILToken(lToken).underlying());
     }
 
-    function getUnderlyingPrices(
-        address[] memory gTokens
-    ) public view override returns (uint256[] memory) {
-        uint256[] memory prices = new uint256[](gTokens.length);
-        for (uint256 i = 0; i < gTokens.length; i++) {
-            prices[i] = priceOf(ILToken(gTokens[i]).underlying());
+    function getUnderlyingPrices(address[] memory lTokens) public view override returns (uint256[] memory) {
+        uint256[] memory prices = new uint256[](lTokens.length);
+        for (uint256 i = 0; i < lTokens.length; i++) {
+            prices[i] = priceOf(ILToken(lTokens[i]).underlying());
         }
         return prices;
     }
@@ -124,8 +104,7 @@ contract PriceCalculator is IPriceCalculator, Ownable {
     function priceOfETH() public view override returns (uint256 valueInUSD) {
         valueInUSD = 0;
         if (tokenFeeds[ETH] != address(0)) {
-            (, int256 price, , , ) = AggregatorV3Interface(tokenFeeds[ETH])
-                .latestRoundData();
+            (, int256 price, , , ) = AggregatorV3Interface(tokenFeeds[ETH]).latestRoundData();
             return uint256(price).mul(1e10);
         } else if (references[ETH].lastUpdated > block.timestamp.sub(1 days)) {
             return references[ETH].lastData;
@@ -144,17 +123,10 @@ contract PriceCalculator is IPriceCalculator, Ownable {
         valueInUSD = 0;
         uint256 assetDecimals = asset == address(0) ? 1e18 : 10 ** decimals;
         if (tokenFeeds[asset] != address(0)) {
-            (, int256 price, , , ) = AggregatorV3Interface(tokenFeeds[asset])
-                .latestRoundData();
-            valueInUSD = uint256(price).mul(1e10).mul(amount).div(
-                assetDecimals
-            );
-        } else if (
-            references[asset].lastUpdated > block.timestamp.sub(1 days)
-        ) {
-            valueInUSD = references[asset].lastData.mul(amount).div(
-                assetDecimals
-            );
+            (, int256 price, , , ) = AggregatorV3Interface(tokenFeeds[asset]).latestRoundData();
+            valueInUSD = uint256(price).mul(1e10).mul(amount).div(assetDecimals);
+        } else if (references[asset].lastUpdated > block.timestamp.sub(1 days)) {
+            valueInUSD = references[asset].lastData.mul(amount).div(assetDecimals);
         } else {
             revert("PriceCalculator: invalid oracle value");
         }

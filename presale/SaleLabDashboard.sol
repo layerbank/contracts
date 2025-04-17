@@ -17,13 +17,10 @@ contract SaleLabDashboard is ISaleLabDashboard {
         saleLabOverflowFarm = ISaleLabOverflowFarm(_saleLabOverflowFarm);
     }
 
-    function getOverflowFarmUserInfo(
-        address user
-    ) external view override returns (OverflowFarmUserInfo memory) {
+    function getOverflowFarmUserInfo(address user) external view override returns (OverflowFarmUserInfo memory) {
         address _user = user;
 
-        (uint256 _totalPurchasedETH, bool _claimed, ) = saleLabOverflowFarm
-            .userInfo(_user);
+        (uint256 _totalPurchasedETH, bool _claimed, ) = saleLabOverflowFarm.userInfo(_user);
 
         uint256 _refundETH = saleLabOverflowFarm.getRefundingAmount(_user);
         bool _isWhitelist = saleLabOverflowFarm.whitelist(_user);
@@ -43,12 +40,7 @@ contract SaleLabDashboard is ISaleLabDashboard {
         return overflowFarmInfo;
     }
 
-    function getOverflowFarmInfo()
-        external
-        view
-        override
-        returns (OverflowFarmInfo memory)
-    {
+    function getOverflowFarmInfo() external view override returns (OverflowFarmInfo memory) {
         uint256 _offeringAmount = saleLabOverflowFarm.offeringAmount();
         uint256 _raisingAmount = saleLabOverflowFarm.raisingAmount();
 
@@ -67,14 +59,11 @@ contract SaleLabDashboard is ISaleLabDashboard {
             _totalSupply = 1e18;
         }
 
-        uint256 _ethPriceInUSD = 1850e18;
-        uint256 _labPriceInUSD = 1e17;
+        uint256 _rewardInETH = _labPriceInETH.mul(_dayReward).div(1e18);
+        uint256 _stakedInETH = _totalSupply;
 
-        uint256 _rewardValueInUSD = _labPriceInUSD.mul(_dayReward).div(1e18);
-        uint256 _stakedValueInUSD = _ethPriceInUSD.mul(_totalSupply).div(1e18);
-
-        uint256 _dayProfit = _rewardValueInUSD.mul(1e18).div(_stakedValueInUSD);
-        uint256 _apr = _dayProfit.mul(365);
+        uint256 _dayProfitInETH = _rewardInETH.mul(1e18).div(_stakedInETH);
+        uint256 _apr = _dayProfitInETH.mul(365);
 
         OverflowFarmInfo memory overflowFarmInfo = OverflowFarmInfo({
             raisingAmount: _raisingAmount,
@@ -83,7 +72,7 @@ contract SaleLabDashboard is ISaleLabDashboard {
             startTime: saleLabOverflowFarm.startTime(),
             endTime: saleLabOverflowFarm.endTime(),
             farmingRewardAPR: _apr,
-            harvestTime: saleLabOverflowFarm.harvestTime()
+            harvestTime: saleLabOverflowFarm.harvestTimestamp()
         });
         return overflowFarmInfo;
     }

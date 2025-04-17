@@ -9,13 +9,9 @@ interface ILToken {
 
     function totalSupply() external view returns (uint256);
 
-    function accountSnapshot(
-        address account
-    ) external view returns (Constant.AccountSnapshot memory);
+    function accountSnapshot(address account) external view returns (Constant.AccountSnapshot memory);
 
-    function underlyingBalanceOf(
-        address account
-    ) external view returns (uint256);
+    function underlyingBalanceOf(address account) external view returns (uint256);
 
     function borrowBalanceOf(address account) external view returns (uint256);
 
@@ -39,9 +35,7 @@ interface ILToken {
 
     function getAccInterestIndex() external view returns (uint256);
 
-    function accruedAccountSnapshot(
-        address account
-    ) external returns (Constant.AccountSnapshot memory);
+    function accruedAccountSnapshot(address account) external returns (Constant.AccountSnapshot memory);
 
     function accruedBorrowBalanceOf(address account) external returns (uint256);
 
@@ -51,75 +45,42 @@ interface ILToken {
 
     function approve(address spender, uint256 amount) external returns (bool);
 
-    function allowance(
-        address owner,
-        address spender
-    ) external view returns (uint256);
+    function allowance(address owner, address spender) external view returns (uint256);
 
     function balanceOf(address account) external view returns (uint256);
 
     function transfer(address dst, uint256 amount) external returns (bool);
 
-    function transferFrom(
-        address src,
-        address dst,
-        uint256 amount
-    ) external returns (bool);
+    function transferFrom(address src, address dst, uint256 amount) external returns (bool);
 
-    function supply(
+    function supply(address account, uint256 underlyingAmount) external payable returns (uint256);
+
+    function supplyBehalf(
         address account,
+        address supplier,
         uint256 underlyingAmount
     ) external payable returns (uint256);
 
-    function redeemToken(
-        address account,
-        uint256 gTokenAmount
-    ) external returns (uint256);
+    function redeemToken(address account, uint256 lTokenAmount) external returns (uint256);
 
-    function redeemUnderlying(
-        address account,
-        uint256 underlyingAmount
-    ) external returns (uint256);
+    function redeemUnderlying(address account, uint256 underlyingAmount) external returns (uint256);
 
     function borrow(address account, uint256 amount) external returns (uint256);
 
-    function repayBorrow(
-        address account,
-        uint256 amount
-    ) external payable returns (uint256);
+    function borrowBehalf(address account, address borrower, uint256 amount) external returns (uint256);
 
-    function repayBorrowBehalf(
-        address payer,
-        address borrower,
-        uint256 amount
-    ) external payable returns (uint256);
+    function repayBorrow(address account, uint256 amount) external payable returns (uint256);
 
     function liquidateBorrow(
-        address gTokenCollateral,
+        address lTokenCollateral,
         address liquidator,
         address borrower,
         uint256 amount
-    )
-        external
-        payable
-        returns (
-            uint256 seizeGAmount,
-            uint256 rebateGAmount,
-            uint256 liquidatorGAmount
-        );
+    ) external payable returns (uint256 seizeLAmount, uint256 rebateLAmount, uint256 liquidatorLAmount);
 
-    function seize(
-        address liquidator,
-        address borrower,
-        uint256 gTokenAmount
-    ) external;
+    function seize(address liquidator, address borrower, uint256 lTokenAmount) external;
 
     function withdrawReserves() external;
 
-    function transferTokensInternal(
-        address spender,
-        address src,
-        address dst,
-        uint256 amount
-    ) external;
+    function transferTokensInternal(address spender, address src, address dst, uint256 amount) external;
 }
