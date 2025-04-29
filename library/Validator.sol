@@ -28,6 +28,8 @@ contract Validator is IValidator, Ownable {
 
     bool public initialized;
 
+    mapping(address => bool) public blacklisted;
+
     /* ========== INITIALIZER ========== */
 
     constructor() public {}
@@ -40,12 +42,21 @@ contract Validator is IValidator, Ownable {
         initialized = true;
     }
 
+    modifier onlyNotInBlacklist(address account) {
+        require(!blacklisted[account], "Validator: account is blacklisted");
+        _;
+    }
+
     /// @notice priceCalculator address 를 설정
     /// @dev ZERO ADDRESS 로 설정할 수 없음
     /// @param _priceCalculator priceCalculator contract address
     function setPriceCalculator(address _priceCalculator) public onlyOwner {
         require(_priceCalculator != address(0), "Validator: invalid priceCalculator address");
         oracle = IPriceCalculator(_priceCalculator);
+    }
+
+    function setBlacklisted(address account, bool status) external onlyOwner {
+        blacklisted[account] = status;
     }
 
     /* ========== VIEWS ========== */
@@ -101,12 +112,20 @@ contract Validator is IValidator, Ownable {
 
     /* ========== ALLOWED FUNCTIONS ========== */
 
-    function redeemAllowed(address lToken, address redeemer, uint256 redeemAmount) external override returns (bool) {
+    function redeemAllowed(
+        address lToken,
+        address redeemer,
+        uint256 redeemAmount
+    ) external override onlyNotInBlacklist(redeemer) returns (bool) {
         (, uint256 shortfall) = _getAccountLiquidityInternal(redeemer, lToken, redeemAmount, 0);
         return shortfall == 0;
     }
 
-    function borrowAllowed(address lToken, address borrower, uint256 borrowAmount) external override returns (bool) {
+    function borrowAllowed(
+        address lToken,
+        address borrower,
+        uint256 borrowAmount
+    ) external override onlyNotInBlacklist(borrower) returns (bool) {
         require(borrowAmount > DUST, "Validator: too small borrow amount");
         require(core.checkMembership(borrower, address(lToken)), "Validator: enterMarket required");
         require(oracle.getUnderlyingPrice(address(lToken)) > 0, "Validator: Underlying price error");

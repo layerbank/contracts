@@ -57,6 +57,12 @@ contract LToken is Market {
         initialized = true;
     }
 
+    /* ========== PURES ========== */
+    function divRoundUp(uint256 a, uint256 b) internal pure returns (uint256) {
+        require(b != 0, "division by zero");
+        return (a + b - 1) / b;
+    }
+
     /* ========== VIEWS ========== */
 
     function allowance(address account, address spender) external view override returns (uint256) {
@@ -267,8 +273,10 @@ contract LToken is Market {
             "LToken: not enough underlying"
         );
 
-        uint lAmountToRedeem = lAmountIn > 0 ? lAmountIn : uAmountIn.mul(1e18).div(exchangeRate());
+        uint lAmountToRedeem = lAmountIn > 0 ? lAmountIn : divRoundUp(uAmountIn.mul(1e18), exchangeRate());
         uint uAmountToRedeem = lAmountIn > 0 ? lAmountIn.mul(exchangeRate()).div(1e18) : uAmountIn;
+
+        require(lAmountToRedeem > 0, "LToken: invalid lAmountToRedeem");
 
         require(
             IValidator(core.validator()).redeemAllowed(address(this), account, lAmountToRedeem),
